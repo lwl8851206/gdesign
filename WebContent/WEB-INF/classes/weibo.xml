@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="weibotweet" extends="json-default" namespace="/tweet">
+	
+	
+		<action name="*" class="gdesign.action.TweetsAction" method="{1}">
+			
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+			
+			
+		</action>
+	</package>
+
+	<package name="weibofriendship" extends="json-default" namespace="/friendship">
+		
+		<action name="*" class="gdesign.action.FriendshipsAction" method="{1}">
+			
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<param name="uid">1896325745</param>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+			
+			
+		</action>		
+		
+		
+	</package>
+	
+	<package name="weibofavorite" extends="json-default" namespace="/favorite">
+		
+		<action name="*" class="gdesign.action.FavoritesAction" method="{1}">
+			
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+			
+			
+		</action>		
+		
+		
+	</package>	
+	
+	<package name="weibocomment" extends="json-default" namespace="/comment">
+		
+		<action name="*" class="gdesign.action.CommentsAction" method="{1}">
+			
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+			
+			
+		</action>		
+		
+		
+	</package>	
+
+	<package name="weibouser" extends="json-default" namespace="/user">
+		
+		<action name="*" class="gdesign.action.UsersAction" method="{1}">
+			
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+			
+			
+		</action>		
+		
+		
+	</package>		
+
+	
+
+</struts>
+
+	
+
+

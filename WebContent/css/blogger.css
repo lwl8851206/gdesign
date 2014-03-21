@@ -1,0 +1,78 @@
+.blogger {
+	background: white;
+
+}
+
+.blogger-detailed-part:after{
+	content: "";
+	display: block;
+	height: 1px;
+	background-color: gray;
+	opacity: 0.5;
+}
+
+.blogger-detailed-part:last-child:after{
+	display: none;
+}
+
+.col-left-autoresize, .col-right-autoresize{
+	padding: 15px 15px;
+	margin: 0px;
+	position: relative;
+	float: left;
+}
+
+
+.blogger-desc img, .blogger-desc span{
+	float: left;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+@media screen and (min-width: 769px){
+  .blogger-desc img{
+  	width: 100%;
+  }
+
+  .col-left-autoresize {
+    width: 33.33333333%;
+  }
+  .col-right-autoresize {
+  	width: 66.66666667%;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .blogger-desc img{
+  	width: 50%;
+  	
+  }
+
+  .blogger-desc span {
+
+  }
+
+  .col-left-autoresize {
+    width: 100%;
+  }
+  .col-right-autoresize {
+  	width: 100%;
+  }
+}
+
+
+
+@media only handheld {
+  .blogger-desc img{
+  	width: 50%;
+  }
+
+  .col-left-autoresize {
+    width: 100%;
+  }
+  .col-right-autoresize {
+  	width: 100%;
+}

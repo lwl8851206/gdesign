@@ -1,0 +1,122 @@
+		<div class="container message-group">
+			<div class="row message" ng-repeat="tweet in tweets" id="tweet{{tweet.mid}}">
+				<div class="bg-col-autoresize clearfix" >
+					<article>
+						<header class="message-owner">
+							<img  src="{{tweet.user.profile_image_url}}" width=40 height=40>
+							<span class="text-warn">{{tweet.screen_name}}</span>
+						</header>
+						<section class="message-content clearfix">
+							
+							<p>{{tweet.text}}</p>
+							
+								<img src="{{img.thumbnail_pic}}"  width=20% ng-repeat="img in tweet.pic_urls">
+							
+							
+
+
+						</section>
+						<footer class="clearfix message-footer">
+							<div class="pull-right">
+							位于:<span class="text-muted">{{tweet.geo}}</span>
+							published at <span class="text-info">{{tweet.created_at}}</span>
+							</div>
+						</footer>
+						<div class="message-action">
+							<span class="message-action-comment" ng-click="toggleCPanel(tweet.mid, $index);">评论{{tweet.comments_count}}</span>
+							<span class="message-action-repost" ng-click="destroyTweet(tweet.mid)">转发{{tweet.reposts_count}}</span>
+							<span class="message-action-favor" ng-show="{{tweet.favorited}}">取消收藏</span>
+							<span class="message-action-favor" ng-hide="{{tweet.favorited}}">收藏</span>
+						</div>
+
+						<div class="message-comment-panel" ng-show="cPanelShow[$index]">
+							<fieldset>
+								<legend>评论列表</legend>
+								<div class="input-group">
+								          <input type="text" class="form-control" id="cm{{$index}}">
+								          <span class="input-group-btn">
+								            <button class="btn btn-default" type="button" ng-click="createComment(tweet.mid, $index)">评论</button>
+								          </span>
+								</div>	
+								<div id="cmlist{{$index}}">
+									<p ng-repeat="comment in comments[$index]"><span class="text-info">{{comment.user.screen_name}} reply</span>: {{comment.text}}</p>								
+								</div>							
+							
+
+								<div class="row" ng-show="true">
+				 					<div class="col-xs-2 pagination-info col-xs-offset-3">
+										<ul class="pagination">
+									        <li class="disabled" ><a ng-click="showComments(tweet.mid, cPageDirect[$index].bPage, $index)">«</a></li>
+									        <li class="active"><a  disabled href="javascript:void(0);" ng-bind="cPage[$index]"> <span class="sr-only">(current)</span></a></li>
+									        
+									        <li ><a ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)">»</a></li>
+									     </ul>
+									</div>
+				 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
+				 						<div class="row">
+<!-- 				 							<div class="col-xs-6">
+					 	 	 					<div class=" input-group">
+						 					 	  <input type="text" class="form-control" ng-blur="updateCPageGo($index)">
+										          <span class="input-group-btn">
+								            		<a class="btn btn-default" ng-click="showComments(tweet.mid, cPageGo[$index], $index)" >跳到</a>
+										          </span>						
+						 						</div>							
+				 							</div> -->
+					 						<div class="col-xs-6" style="line-height: 34px;">
+								            		共有<span class="text-info"><strong>{{cPageSum[$index]}}</strong></span>页数
+					 						</div>
+				 						</div>
+									</div> 
+								</div>
+							</fieldset>
+						</div> 
+
+					</article>
+					
+
+				</div>
+
+			</div>
+			<div class="row" ng-show="true">
+					
+ 					<div class="col-xs-2 pagination-info col-xs-offset-3">
+						<ul class="pagination">
+					        <li class="disabled"><a  href="#/tweets/{{pageDirect.bPage}}">«</a></li>
+					        <li class="active"><a  disabled href="javascript:void(0);">{{page}} <span class="sr-only">(current)</span></a></li>
+					        
+					        <li><a href="#/tweets/{{pageDirect.fPage}}">»</a></li>
+					     </ul>
+					</div>
+					
+					
+ 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
+ 						<div class="row">
+ 							<div class="col-xs-6">
+	 	 	 					<div class=" input-group">
+		 					 	  <input type="text" class="form-control" ng-model="pageGo">
+						          <span class="input-group-btn">
+				            		<a class="btn btn-default" href="#/tweets/{{pageGo}}" >跳到</a>
+						          </span>						
+		 						</div>							
+ 							</div>
+
+	 						<div class="col-xs-6" style="line-height: 34px;">
+		 						
+							
+						         
+				            		共有<span class="text-info"><strong>{{pageSum}}</strong></span>页数{{sign}}
+						          				
+		 					 						
+	 						</div>
+					
+ 						</div>
+
+				   
+					</div> 
+					
+					
+			</div>
+
+		</div> 
+		
+	

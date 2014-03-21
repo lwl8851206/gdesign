@@ -1,0 +1,61 @@
+		<div class="container">
+			<div class="row ">
+				<div class="bg-col-autoresize clearfix blogger">
+					<div class="row">
+						<div class="col-left-autoresize blogger-desc">
+							<img src="{{user.profile_image_url}}"  >
+							<span>{{user.screen_name}}</span>
+						</div>
+						<div class="col-right-autoresize blogger-detailed">
+
+							<div class="blogger-detailed-part">
+								<h3>个人简介</h3>
+								<dl class="dl-horizontal">
+						
+									<dt>性别：</dt>
+									<dd>{{user.gender}}</dd>
+									<dt>省份</dt>
+									<dd>{{user.province}}</dd>
+									<dt>城市</dt>
+									<dd>{{user.city}}</dd>
+									<dt>描述</dt>
+									<dd>{{user.description}}</dd>
+									<dt>粉丝</dt>
+									<dd>{{user.followers_count}}</dd>
+									<dt>关注</dt>
+									<dd>{{user.friends_count}}</dd>
+									<dt>微薄数</dt>
+									<dd>{{user.statuses_count}}</dd>
+									<dt>关系状态</dt>
+									<dd ng-show="user.follow_me">非粉丝</dd>
+									<dd ng-hide="user.follow_me">粉丝</dd>
+									<dd ng-show="user.following"><span class="btn btn-success" ng-click="destroyFriend(user.uid)">取消关注</span></dd>
+									<dd ng-hide="user.following"><span class="btn btn-info" ng-click="createFriend(user.uid)">关注</span></dd>
+									<dt>创建时间</dt>
+									<dd>{{user.created_at}}</dd>
+									<dt>在线状态</dt>
+									<dd>{{user.online_status}}</dd>
+								
+								<dl>
+							</div>
+					
+
+<!-- 							<div class="blogger-detailed-part">
+								<h3>个人简介</h3>
+								<dl class="dl-horizontal">
+									<dt>真名：</dt>
+									<dd>李伟龙</dd>
+									<dt>性别：</dt>
+									<dd>男</dd>
+									<dt>出生时间：</dt>
+									<dd>1991/09/11</dd>
+									<dt>爱好：</dt>
+									<dd>吃是</dd>
+								<dl>
+							</div> -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

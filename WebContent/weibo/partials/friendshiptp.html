@@ -1,0 +1,64 @@
+		<div class="container">
+			<div class="row">
+				<div class="bg-col-autoresize follower-group clearfix" >
+					<div class="col-xs-12 follower" ng-repeat="user in users">
+						<div class="col-xs-4">
+							<img src="{{user.profile_image_url}}" width=10%>
+							<div>昵称：{{user.screen_name}}(
+								<span class="text-success" ng-show="{{user.follow_me}}">对方已关注你</span>
+								<span class="text-warning" ng-hide="{{user.follow_me}}">对方未关注你</span>								
+							)</div>
+							<div></div>
+						</div>
+						<div class="col-xs-8">
+							<h3>个人描述</h3>
+							<p>{{user.description}}</p>
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
+
+			<div class="row" ng-show="true">
+					
+ 					<div class="col-xs-2 pagination-info col-xs-offset-3">
+						<ul class="pagination">
+					        <li class="disabled"><a  href="#/{{type}}/{{pageDirect.bPage}}">«</a></li>
+					        <li class="active"><a  disabled href="javascript:void(0);">{{page}} <span class="sr-only">(current)</span></a></li>
+					        
+					        <li><a href="#/{{type}}/{{pageDirect.fPage}}">»</a></li>
+					     </ul>
+					</div>
+					
+					
+ 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
+ 						<div class="row">
+ 							<div class="col-xs-6">
+	 	 	 					<div class=" input-group">
+		 					 	  <input type="text" class="form-control" ng-model="pageGo">
+						          <span class="input-group-btn">
+				            		<a class="btn btn-default" href="#/{{type}}/{{pageGo}}" >跳到</a>
+						          </span>						
+		 						</div>							
+ 							</div>
+
+	 						<div class="col-xs-6" style="line-height: 34px;">
+		 						
+							
+						         
+				            		共有<span class="text-info"><strong>{{pageSum}}</strong></span>页数
+						          				
+		 					 						
+	 						</div>
+					
+ 						</div>
+
+				   
+					</div> 
+					
+					
+			</div>
+			
+		</div>
