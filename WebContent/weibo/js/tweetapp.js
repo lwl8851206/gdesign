@@ -14,7 +14,7 @@ phonecatApp.config(['$routeProvider',
         templateUrl: 'partials/tweettp.html',
         controller: 'TweetListCtrl'
       }).
-      when('/tweets/:page', {
+      when('/tweets/page/:page/uid/:uid', {
         templateUrl: 'partials/tweettp.html',
         controller: 'TweetListCtrl'
       }).

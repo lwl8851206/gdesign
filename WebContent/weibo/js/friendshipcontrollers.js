@@ -29,12 +29,12 @@ friendshipControllers.factory("pageSum", function pageSum() {
 friendshipControllers.factory("pageDirection", function pageDirection() {
 	return {
 		"direct" : function(page, pageSum) {
-			var result = {};
-			page = parseFloat(page);
+			var result = {},
+			page = parseFloat(page),
 			pageSum = parseFloat(pageSum);
 			
 			result["bPage"] = (page == 1) ? 1 : page - 1;
-			result["fPage"] = (page == pageSum) ? pageSum : page + 1;
+			result["fPage"] = (page >= pageSum) ? pageSum : page + 1;
 			return result;	
 		}
 	}
@@ -48,23 +48,23 @@ friendshipControllers.controller('FollowerListCtrl', ['$scope', '$routeParams', 
 	
 	$scope.page = ($routeParams.page == null) ? 1 : $routeParams.page;
 	$scope.type = "followers";
-	
 	jQuery.ajax({
 		url : "http://localhost:8080/gdesign/friendship/showFollowers.do",
 		data : {
-			"page" : $scope.page
+			"page" : $scope.page,
+			"uid" : "1896325745"
 		},
-		async : false,
+		async : true,
 		success : function(data) {
-			
-			var jsonData = eval("(" + data + ")");
-			if (jsonData != null) {
-				
-				$scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
-				$scope.pageDirect = pageDirection.direct($scope.page, $scope.pageSum);
-				$scope.users = jsonData["users"];
-			}
-			
+			$scope.$apply(function(scope) {
+				var jsonData = eval("(" + data + ")");
+				if (jsonData != null) {
+					
+					scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
+					scope.pageDirect = pageDirection.direct(scope.page, scope.pageSum);
+					scope.users = jsonData["users"];
+				}				
+			});	
 			
 		}
 	});
@@ -74,25 +74,25 @@ friendshipControllers.controller('FollowerListCtrl', ['$scope', '$routeParams', 
 
 friendshipControllers.controller('FriendListCtrl', ['$scope', '$routeParams', 'pageSum', 'pageDirection',
     function($scope, $routeParams, pageSum, pageDirection) {
-  	
   	$scope.page = ($routeParams.page == null) ? 1 : $routeParams.page;
   	$scope.type = "friends";
   	jQuery.ajax({
   		url : "http://localhost:8080/gdesign/friendship/showFriends.do",
   		data : {
-  			"page" : $scope.page
+  			"page" : $scope.page,
+  			"uid" : "1896325745"
   		},
-  		async : false,
+  		async : true,
   		success : function(data) {
-  			
-  			var jsonData = eval("(" + data + ")");
-  			if (jsonData != null) {
-  				
-  				$scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
-  				$scope.pageDirect = pageDirection.direct($scope.page, $scope.pageSum);
-  				$scope.users = jsonData["users"];
-  			}
-  			
+  			$scope.$apply(function(scope) {
+  	  			var jsonData = eval("(" + data + ")");
+  	  			if (jsonData != null) {
+  	  				
+  	  				$scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
+  	  				$scope.pageDirect = pageDirection.direct($scope.page, $scope.pageSum);
+  	  				$scope.users = jsonData["users"];
+  	  			}				
+  			});
   			
   		}
   	});
