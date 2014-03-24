@@ -21,16 +21,16 @@
 									<dt>描述</dt>
 									<dd>{{user.description}}</dd>
 									<dt>粉丝</dt>
-									<dd>{{user.followers_count}}</dd>
+									<dd><!-- <a href="friendship.html#/followers/{{user.id}}/page/2">{{user.followers_count}}</a> -->{{user.followers_count}}</dd>
 									<dt>关注</dt>
-									<dd>{{user.friends_count}}</dd>
+									<dd><!-- <a href="friendship.html#/friends/{{user.id}}/page/2">{{user.friends_count}}</a> -->{{user.friends_count}}</dd>
 									<dt>微薄数</dt>
-									<dd>{{user.statuses_count}}</dd>
+									<dd><!-- <a href="index.html#/tweets/page/1/uid/{{user.id}}">{{user.statuses_count}}</a> -->{{user.statuses_count}}</dd>
 									<dt>关系状态</dt>
 									<dd ng-show="user.follow_me">非粉丝</dd>
 									<dd ng-hide="user.follow_me">粉丝</dd>
-									<dd ng-show="user.following"><span class="btn btn-success" ng-click="destroyFriend(user.uid)">取消关注</span></dd>
-									<dd ng-hide="user.following"><span class="btn btn-info" ng-click="createFriend(user.uid)">关注</span></dd>
+									<dd ng-show="user.following"><span class="btn btn-success" ng-click="destroyFriend(user.id)">取消关注</span></dd>
+									<dd ng-hide="user.following"><span class="btn btn-info" ng-click="createFriend(user.id)">关注</span></dd>
 									<dt>创建时间</dt>
 									<dd>{{user.created_at}}</dd>
 									<dt>在线状态</dt>

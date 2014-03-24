@@ -1,3 +1,5 @@
+@CHARSET "UTF-8";
+
 .message-comment-panel {
   -webkit-transition:all linear 0.5s;
   transition:all linear 0.5s;

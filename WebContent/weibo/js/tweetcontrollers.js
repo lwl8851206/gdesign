@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var tweetControllers = angular.module('tweetControllers', []);
+var tweetControllers = angular.module('tweetControllers', ['ngSanitize']);
 
 /**
  * 返回总页数,确定当前第一页
@@ -27,17 +27,21 @@ tweetControllers.factory("pageSum", function pageSum() {
  */
 tweetControllers.factory("pageDirection", function pageDirection() {
 	return {
-		"direct" : function(page, pageSum) {
-			var result = {};
-			page = parseFloat(page);
-			pageSum = parseFloat(pageSum);
+		"direct" : function(page, pSum) {
+			var result = {},
+			page = parseFloat(page),
+			pSum = parseFloat(pSum);
 			
 			result["bPage"] = (page == 1) ? 1 : page - 1;
-			result["fPage"] = (page == pageSum) ? pageSum : page + 1;
+			console.log("page is " + page + ", pagesum is " + pSum);
+			result["fPage"] = (page >= pSum) ? pSum : page + 1;
+			console.log("fpage is " + result["fPage"]);
 			return result;	
 		}
 	}
 });
+
+
 
 
 tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum', 'pageDirection', 
@@ -48,6 +52,18 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	$scope.cPageDirect = {};
 	$scope.comments = {};
 	$scope.cPage = {};
+	$scope.retweetId = null;
+	$scope.uid = $routeParams.uid;
+	
+	//参数为空或者false,即为false,否则为true
+	$scope.checkShow = function(type) {
+		return (type == null || type == false || type.length == 0) ? false : true;
+	};
+	
+	//更新转发微薄mid
+	$scope.updateMid = function(mid) {
+		$scope.retweetId = mid;
+	}
 	
 	//显示评论面板
 	$scope.toggleCPanel = function(mid, index) {
@@ -58,29 +74,31 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 		if ($scope.cPanelShow[index])
 			$scope.showComments(mid, 1, index);
 	}
-	
-	
+			
 	//显示某条微波的评论
 	$scope.showComments = function(mid, cP, index) {
 		$scope.cPage[index] = (cP == null) ? 1 : cP;
-		
+		$scope.comments = {};
 		jQuery.ajax({
 			"url" : "http://localhost:8080/gdesign/comment/showComments.do",
 			"data" : {
 				"page" : $scope.cPage[index],
-				"count" : 20,
+				"count" : 10,
 				"mid" : mid
 			},
-			"async" : false,
-			"success" : function(data) {
+			"beforeSend" : function() {
 				
-				var jsonData = eval("(" + data + ")");
-				if (jsonData != null) {
-					$scope.cPageSum[index] = pageSum.cal(jsonData["total_number"], 20);
-					console.log("comment pageSum[" + index + "]:" + $scope.cPageSum[index]);
-					$scope.cPageDirect[index] = pageDirection.direct($scope.cPage[index], $scope.cPageSum);
-					$scope.comments[index] = jsonData["comments"];
-				}	
+			},
+			"async" : true,
+			"success" : function(data) {
+				$scope.$apply(function(scope) {
+					var jsonData = eval("(" + data + ")");
+					if (jsonData != null) {
+						scope.cPageSum[index] = pageSum.cal(jsonData["total_number"], 10);
+						scope.cPageDirect[index] = pageDirection.direct(scope.cPage[index], scope.cPageSum[index]);
+						scope.comments[index] = jsonData["comments"];
+					}						
+				});				
 				
 			}
 		});
@@ -88,17 +106,22 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	
 	//评论微薄
 	$scope.createComment = function(mid, index) {
-		var text = jQuery("#cm" + index).val();
+		var inputArea = jQuery("#cm" + index);
+		var text = inputArea.val();
 		jQuery.ajax({
 			"url" : "http://localhost:8080/gdesign/comment/createComment.do",
 			"data" : {
 				"mid" : mid,
 				"comment" : text
 			},
-			"async" : false,
+			"async" : true,
 			"success" : function(data) {
 				//data proccess
-				
+				$scope.$apply(function(scope) {
+					inputArea.val("");
+					scope.showComments(mid, 1, index);					
+				});
+
 			}
 		});
 	}
@@ -106,22 +129,28 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	//删除微薄评论
 	$scope.destroyComment = function(cid) {
 		
+		
 	}
 	
 	//删除微薄
 	$scope.destroyTweet = function(mid) {
 		
-//		jQuery.ajax({
-//			"url" : "http://localhost:8080/gdesign/tweet/destroyTweet.do",
-//			"data" : {
-//				"mid" : mid,
-//			},
-//			"async" : false,
-//			"success" : function(data) {
-//				//data proccess
-//				jQuery("#tweet" + mid).hide("slow");
-//			}
-//		});	
+		jQuery.ajax({
+			"url" : "http://localhost:8080/gdesign/tweet/destroyTweet.do",
+			"data" : {
+				"mid" : mid,
+			},
+			"async" : true,
+			"success" : function(data) {
+				//data proccess
+				$scope.$apply(function(scope) {
+					jQuery("#tweet" + mid).hide("fast", function() {
+						$scope.showAllTweets();
+					});
+				});
+				
+			}
+		});	
 	}
 	
 	//收藏微薄
@@ -154,39 +183,115 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 //	});			
 	}	
 	
-	
-	
-	jQuery.ajax({
-		url : "http://localhost:8080/gdesign/tweet/showAllTweets.do",
-		data : {
-			"page" : $scope.page
-		},
-		async : false,
-		success : function(data) {
-			
-			var jsonData = eval("(" + data + ")");
-
-			if (jsonData != null) {
+	$scope.retweet = function(mid, text) {
+		console.log("mid :" + mid);
+		jQuery.ajax({
+			"url" : "http://localhost:8080/gdesign/tweet/repostTweet.do",
+			"data" : {
+				"mid" : mid,
+				"text" : text
+			},
+			"beforeSend" : function() {
+				jQuery("body").append("<div class='alert alert-success'  style='position:fixed;text-align:center;z-index:99999;top:0px;width:100%;' id='retweethint'>Retweeting......</div>");
+			},
+			"async" : true,
+			"success" : function(data) {
+				//data proccess
+				$scope.$apply(function(scope) {
+					jQuery("#retweethint").val("Completed...").fadeOut(1000, function() {
+						jQuery(this).remove();
+						jQuery("#retweet-text").val("");
+					});
+//					scope.showAllTweets();
+				});
 				
-				$scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
-				$scope.pageDirect = pageDirection.direct($scope.page, $scope.pageSum);
-				$scope.tweets = jsonData["statuses"];
-				$scope.cPanelShow = [];
-				var len = jsonData["statuses"].length;
-				for (var i = 0; i < len; i++)
-					$scope.cPanelShow.push(false);
+				
 			}
-			
-			
+		});		
+		
+		
+	}
+	
+	
+	$scope.showAllTweets = function() {
+		
+		if ($scope.uid == null) {
+			jQuery.ajax({
+				url : "http://localhost:8080/gdesign/tweet/showAllTweets.do",
+				data : {
+					"page" : $scope.page
+				},
+				"beforeSend" : function() {
+					jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
+				},			
+				async : true,
+				success : function(data) {
+					$scope.$apply(function(scope) {
+						jQuery("#tweetshint").val("Completed...").fadeOut(1000, function() {
+							$(this).remove();
+						});
+						var jsonData = eval("(" + data + ")");
+
+						if (jsonData != null) {
+							
+							scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
+							scope.pageDirect = pageDirection.direct(scope.page, scope.pageSum);
+							scope.tweets = jsonData["statuses"];
+							
+							scope.cPanelShow = [];
+							var len = jsonData["statuses"].length;
+							for (var i = 0; i < len; i++) {
+								scope.cPanelShow.push(false);
+							}
+						}					
+					});			
+					
+				}
+			});				
 		}
-	});
+		else {
+			jQuery.ajax({
+				url : "http://localhost:8080/gdesign/tweet/showOnesTweets.do",
+				data : {
+					"page" : $scope.page,
+					"uid" : $scope.uid
+				},
+				"beforeSend" : function() {
+					jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
+				},			
+				async : true,
+				success : function(data) {
+					$scope.$apply(function(scope) {
+						jQuery("#tweetshint").val("Completed...").fadeOut(1000, function() {
+							$(this).remove();
+						});
+						var jsonData = eval("(" + data + ")");
+
+						if (jsonData != null) {
+							
+							scope.pageSum = pageSum.cal(jsonData["total_number"], 20);
+							scope.pageDirect = pageDirection.direct(scope.page, scope.pageSum);
+							scope.tweets = jsonData["statuses"];
+							
+							scope.cPanelShow = [];
+							var len = jsonData["statuses"].length;
+							for (var i = 0; i < len; i++) {
+								scope.cPanelShow.push(false);
+							}
+						}					
+					});			
+					
+				}
+			});				
+		}
+		
+
+		
+	}
+	
+	$scope.showAllTweets();
+
 
     
   }]);
 
-tweetControllers.controller('TweetDetailCtrl', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http) {
-    $http.get('http://localhost:8080/gdesign/tweet/showJson.do' + $routeParams.phoneId + '.json').success(function(data) {
-      $scope.tweets = data;
-    });
-  }]);

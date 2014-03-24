@@ -1,13 +1,18 @@
 package gdesign.helper;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -219,6 +224,21 @@ public class WeiboHelper{
 		return result;
 	}
 	
+	/**
+	 * 获取单条微博的内容
+	 * @param mid
+	 * @return
+	 */
+	public String showTweet(String mid) {
+		String result = null;
+		try {
+			result = statusToJson(this.timeline.showStatus(mid), true).toString();
+		} catch (WeiboException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	/**
 	 * 删除微博
@@ -267,6 +287,27 @@ public class WeiboHelper{
 				ImageItem pic = new ImageItem("pic", content);
 				String s = java.net.URLEncoder.encode(text, "utf-8");
 				st = this.timeline.UploadStatus(s, pic);
+				
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} catch (Exception ioe) {
+			System.out.println("Failed to read the system input.");
+		}		
+		
+		return statusToJson(st, false).toString();
+	}
+	
+	
+	public String publishTweet(String text, File f) {
+		Status st = null;
+		try {
+			try {
+				byte[] content = readFileImage(f);
+				ImageItem pic = new ImageItem("pic", content);
+				String s = java.net.URLEncoder.encode(text, "utf-8");
+				st = this.timeline.UploadStatus(s, pic);
+				
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -390,6 +431,7 @@ public class WeiboHelper{
 		User user = null;
 		try {
 			user = this.friendships.createFriendshipsById(uid);
+			LOG.debug("following : " + user.isFollowing());
 		} catch (WeiboException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -621,6 +663,107 @@ public class WeiboHelper{
 	}
 	
 	/**
+	 * 显示用户发出的评论
+	 * @param page
+	 * @param count
+	 * @return
+	 */
+	public String showIncomments(String page, String count) {
+		String result = null;
+		Comment c = null;
+		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
+		
+		try {
+			CommentWapper cw = this.comments.getCommentByMe(new Paging(Integer.parseInt(page), Integer.parseInt(count)), 0);
+			Iterator<Comment> ite = cw.getComments().iterator();
+			
+			while (ite.hasNext()) {
+				c = ite.next();
+				if (c == null) 
+					continue;
+				JSONObject tempSt = commentToJson(c, true);
+//				tempSt.accumulate("total_number", sw.getTotalNumber());
+				jsonList.add(tempSt);
+			}
+			
+			int len = jsonList.size(); 
+			if (len != 0){
+				net.sf.json.JSONArray jsonArr = new net.sf.json.JSONArray();
+				
+				for (int i = 0; i < len; i++)
+					jsonArr.add(jsonList.get(i));
+				
+				JSONObject jo = new JSONObject();
+				jo.accumulate("total_number", cw.getTotalNumber());
+				jo.accumulate("next_cursor", cw.getNextCursor());
+				jo.accumulate("previous_cursor", cw.getPreviousCursor());
+				
+				jo.accumulate("comments", jsonArr);
+			
+				result = jo.toString();
+				
+			}
+
+			
+		} catch (WeiboException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return result;		
+	}
+	
+	/**
+	 * 显示用户收到的评论
+	 * @param page
+	 * @param count
+	 * @return
+	 */
+	public String showOutcomments(String page, String count) {
+		String result = null;
+		Comment c = null;
+		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
+		
+		try {
+			CommentWapper cw = this.comments.getCommentToMe(new Paging(Integer.parseInt(page), Integer.parseInt(count)), 0, 0);
+			Iterator<Comment> ite = cw.getComments().iterator();
+			
+			while (ite.hasNext()) {
+				c = ite.next();
+				if (c == null) 
+					continue;
+				JSONObject tempSt = commentToJson(c, true);
+//				tempSt.accumulate("total_number", sw.getTotalNumber());
+				jsonList.add(tempSt);
+			}
+			
+			int len = jsonList.size(); 
+			if (len != 0){
+				net.sf.json.JSONArray jsonArr = new net.sf.json.JSONArray();
+				
+				for (int i = 0; i < len; i++)
+					jsonArr.add(jsonList.get(i));
+				
+				JSONObject jo = new JSONObject();
+				jo.accumulate("total_number", cw.getTotalNumber());
+				jo.accumulate("next_cursor", cw.getNextCursor());
+				jo.accumulate("previous_cursor", cw.getPreviousCursor());
+				
+				jo.accumulate("comments", jsonArr);
+			
+				result = jo.toString();
+				
+			}
+
+			
+		} catch (WeiboException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return result;		
+	}	
+	
+	
+	/**
 	 * 获取某个用户的信息
 	 * @param uid
 	 * @return
@@ -665,9 +808,13 @@ public class WeiboHelper{
 	public static JSONObject statusToJson(Status st, boolean isFirstTime) {
 		JSONObject jsonObj = null;
 		HashMap map = new HashMap();
-		
+		Date d = st.getCreatedAt();
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat(  
+                "yyyy-MM-dd hh:mm:ss");  
+        String created_at = format1.format(d);  
+		map.put("created_at", created_at);		
 		map.put("screen_name", st.getUser().getScreenName());
-		map.put("text", st.getText());
+		map.put("text", new LinkDeal(st.getText()).dealLinksInText());
 		map.put("mid", st.getMid());
 		map.put("reposts_count", st.getRepostsCount());
 		map.put("comments_count", st.getCommentsCount());
@@ -680,8 +827,6 @@ public class WeiboHelper{
 
 		if(jArr.length() != 0)
 			map.put("pic_urls", jArr.toString());
-	
-		map.put("created_at", st.getCreatedAt().toGMTString());
 		
 		Status stt = st.getRetweetedStatus();
 		if (isFirstTime)
@@ -707,6 +852,11 @@ public class WeiboHelper{
 	public static JSONObject userToJson(User u) {
 		JSONObject jsonObj = null;
 		HashMap map = new HashMap();
+		Date d = u.getCreatedAt();
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat(  
+                "yyyy-MM-dd hh:mm:ss");  
+        String created_at = format1.format(d);  
+		map.put("created_at", created_at);
 		map.put("id", u.getId());
 		map.put("screen_name", u.getScreenName());
 		map.put("gender", u.getGender());
@@ -717,7 +867,6 @@ public class WeiboHelper{
 		map.put("followers_count", u.getFollowersCount());
 		map.put("friends_count", u.getFriendsCount());
 		map.put("statuses_count", u.getStatusesCount());
-		map.put("created_at", u.getCreatedAt().toLocaleString());
 		map.put("follow_me", u.isfollowMe());
 		map.put("online_status", u.getonlineStatus());
 		map.put("following", u.isFollowing());
@@ -734,10 +883,19 @@ public class WeiboHelper{
 	public static JSONObject commentToJson(Comment c, boolean isFirstTime) {
 		JSONObject jsonObj = null;
 		HashMap map = new HashMap();
-		map.put("created_at", c.getCreatedAt());
+		Date d = c.getCreatedAt();
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat(  
+                "yyyy-MM-dd hh:mm:ss");  
+        String created_at = format1.format(d);  
+		map.put("created_at", created_at);
+		Status st = c.getStatus();
+		if (st != null) {
+			map.put("status", statusToJson(c.getStatus(), false));
+		}
 		map.put("id", c.getId());
 		map.put("text", c.getText());
 		map.put("source", c.getSource());
+//		LOG.debug("status in comment is" + c.getStatus());
 		map.put("user", userToJson(c.getUser()));
 		map.put("mid", c.getMid());
 		if (isFirstTime)
@@ -746,6 +904,29 @@ public class WeiboHelper{
 		jsonObj = JSONObject.fromObject(map);
 		return jsonObj;		
 	}
+	
+	
+	static class LinkDeal {
+		/**
+		 * 对文本中的http链接文本和@生成对应的链接
+		 * 
+		 * 
+		 */
+		private String text;
+		
+		public LinkDeal(String text) {
+			this.text = text;
+		}
+		
+		public String dealLinksInText() {
+			String temp =  this.text.replaceAll("(http://t\\.cn/\\w+)", "<a href=\"$1\" target=\"_blank\">$1</a>");
+			this.text = temp;
+			return this.text;
+		}
+	
+	}
+	
+
 	
 	/**
 	 * 将图片转成二进制流
@@ -766,6 +947,22 @@ public class WeiboHelper{
 		bufferedInputStream.close();
 		return bytes;
 	}	
+	
+	public static byte[] readFileImage(File f) throws IOException {
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(
+				new FileInputStream(f));
+		int len = bufferedInputStream.available();
+		byte[] bytes = new byte[len];
+		int r = bufferedInputStream.read(bytes);
+		if (len != r) {
+			bytes = null;
+			throw new IOException("读取文件不正确");
+		}
+		bufferedInputStream.close();
+		return bytes;		
+	}
+	
+	
 	
 	
 
