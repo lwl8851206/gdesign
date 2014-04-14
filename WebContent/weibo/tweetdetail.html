@@ -5,24 +5,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0" />
 	<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
+	<link rel="stylesheet" href="../css/tweetdetail.css" type="text/css">
 	<link rel="stylesheet" href="../css/common.css" type="text/css">
-	<link rel="stylesheet" href="../css/blogger.css" type="text/css">
-	<title>Home</title>
+	<title>tweetdetail</title>
 </head>
-
 <body>
 	<header  id="header">
 		<div class="header-container navbar-fixed-top">
 			<nav class="container ">
 				<ul class="nav nav-pills">
-					<li class="header-home">
+					<li class="active header-home">
 						<a href="index.html" >
 							<span class="glyphicon glyphicon-home"></span>
 						</a>
 					</li>
 
 					<li class="header-blogger">
-						<a  href="javascript:void(0);" title="blogger" class="dropdown-toggle" data-toggle="dropdown">
+						<a href="javascript:void(0);" title="blogger" class="dropdown-toggle" data-toggle="dropdown">
 							<span class="glyphicon glyphicon-user">do_once_long</span>
 						</a>
 	  					<ul class="dropdown-menu" role="menu">
@@ -30,7 +29,7 @@
 						    <li><a href="commentlist.html">评论列表</a></li>
 						    <li><a href="friendship.html#/followers">粉丝</a></li>
 						    <li class="divider"></li>
-						    <li class="active"><a href="blogger.html">我的主页</a></li>
+						    <li><a href="blogger.html">我的主页</a></li>
 	  					</ul>
 					</li>
 
@@ -45,21 +44,21 @@
 		</div>
 	</header>
 
-
-	<section id="content" ng-view>
-	</section>
+	<section ng-view id="content">
 	
+	
+	</section>
+
 <footer id="footer">
+	<div class="col-xs-12 text-center text-muted">归伟龙所有</div>
+</footer>
 
-			<div class="col-xs-12 text-center text-muted">归伟龙所有</div>
-		
-	</footer>
-  	<script src="lib/angular/angular.js"></script>
-  	<script src="lib/angular/angular-route.js"></script>
-	<script type="text/javascript" src="../js/jquery.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<script src="js/bloggerapp.js"></script>
-  	<script src="js/bloggercontroller.js"></script>
-
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-route.js"></script>
+<script src="lib/angular/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script src="js/tweetdetailapp.js"></script>
+<script src="js/tweetdetailcontroller.js"></script>
 </body>
 </html>

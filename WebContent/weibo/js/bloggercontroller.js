@@ -7,23 +7,27 @@ var bloggerControllers = angular.module('bloggerControllers', []);
 bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
   function($scope, $routeParams) {
 	
-	$scope.uid = ($routeParams.uid == null) ? 1 : $routeParams.uid;
+	$scope.uid = ($routeParams.uid == null) ? '1896325745' : $routeParams.uid;
 	
 	//关注当前用户
 	$scope.createFriend = function(uid) {
+	
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/friendship/createFriend.do",
+			url : "http://localhost:8080/gdesign/friendship/follow.do",
 			data : {
 				"uid" : $scope.uid
 			},
-			async : false,
+			async : true,
 			success : function(data) {
 				
-				var jsonData = eval("(" + data + ")");
-				if (jsonData != null) {
-					$scope.user = jsonData;
-				}
-				
+				$scope.$apply(function(scope) {
+					
+					var jsonData = eval("(" + data + ")");
+					if (jsonData != null) {
+						scope.user = jsonData;
+						console.log("create friend :" + scope.user.following);
+					}					
+				});	
 				
 			}
 		});		
@@ -36,14 +40,16 @@ bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
 			data : {
 				"uid" : $scope.uid
 			},
-			async : false,
+			async : true,
 			success : function(data) {
 				
-				var jsonData = eval("(" + data + ")");
-				if (jsonData != null) {
-					$scope.user = jsonData;
-				}
-				
+				$scope.$apply(function(scope) {
+					var jsonData = eval("(" + data + ")");
+					if (jsonData != null) {
+						scope.user = jsonData;
+						console.log("destroy friend :" + scope.user.following);
+					}					
+				});	
 				
 			}
 		});		
@@ -55,14 +61,14 @@ bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
 		data : {
 			"uid" : $scope.uid
 		},
-		async : false,
+		async : true,
 		success : function(data) {
-			
-			var jsonData = eval("(" + data + ")");
-			if (jsonData != null) {
-				$scope.user = jsonData;
-			}
-			
+			$scope.$apply(function(scope) {
+				var jsonData = eval("(" + data + ")");
+				if (jsonData != null) {
+					$scope.user = jsonData;
+				}				
+			});	
 			
 		}
 	});

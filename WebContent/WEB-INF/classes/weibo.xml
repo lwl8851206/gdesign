@@ -5,9 +5,19 @@
 
 <struts>
 
+	<package name="up" extends="struts-default" namespace="/up">
+				
+		<action name="publishTweet" class="gdesign.action.TweetsAction" method="publishTweet">	
+			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
+			<result name="success" type="redirect">/weibo/index.html</result>
+			<result name="login" type="redirect">/weibo/writeblog.html</result>
+			<result name="input" type="redirect">/weibo/writeblog.html</result>
+		</action>
+	</package>
+
+
 	<package name="weibotweet" extends="json-default" namespace="/tweet">
-	
-	
+				
 		<action name="*" class="gdesign.action.TweetsAction" method="{1}">
 			
 			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
@@ -24,7 +34,6 @@
 		<action name="*" class="gdesign.action.FriendshipsAction" method="{1}">
 			
 			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
-			<param name="uid">1896325745</param>
 			<result type="json">
 				<param name="root">result</param>
 			</result>
