@@ -30,6 +30,14 @@ public class WeiboAction extends ActionSupport{
 		return this.result;
 	}
 	
+	public HttpServletRequest getReq() {
+		return this.req;
+	}
+	
+	public HttpServletResponse getRes() {
+		return this.res;
+	}
+	
 /*	public void setUser(String user) {
 		this.user = user;
 	}

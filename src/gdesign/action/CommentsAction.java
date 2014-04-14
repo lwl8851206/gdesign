@@ -110,4 +110,26 @@ public class CommentsAction extends WeiboAction{
 		this.setResult(result);
 		return SUCCESS;	
 	}
+	
+	/**
+	 * 取得该用户受到的评论
+	 * @return
+	 */
+	public String showInComments() {
+		WeiboHelper wh = this.getWeiboHelper();
+		String result = wh.showIncomments(page, count);
+		this.setResult(result);
+		return SUCCESS;			
+	}
+	
+	/**
+	 * 取得该用户发出的评论
+	 * @return
+	 */
+	public String showOutComments() {
+		WeiboHelper wh = this.getWeiboHelper();
+		String result = wh.showOutcomments(page, count);
+		this.setResult(result);
+		return SUCCESS;	
+	}
 }

@@ -1,5 +1,5 @@
 		<div class="container message-group">
-			<div class="row message" ng-repeat="tweet in tweets" id="tweet{{tweet.mid}}">
+			<div class="row message"  id="tweet{{tweet.mid}}">
 				<div class="bg-col-autoresize clearfix" >
 					<article>
 						<header class="message-owner">
@@ -34,30 +34,25 @@
 							</div>
 						</footer>
 						<div class="message-action">
-							<span class="message-action-comment" ng-click="toggleCPanel(tweet.mid, $index);">评论{{tweet.comments_count}}</span>
 							<span class="message-action-repost"  ng-click="updateMid(tweet.mid)" data-toggle="modal" data-target="#myModal">转发{{tweet.reposts_count}}</span>
-							<span class="message-action-favor" ng-show="tweet.user.screen_name == 'Do_Once_伟龙'" ng-click="destroyTweet(tweet.mid)">删除</span>
-
-	
-
-<!-- 							<span class="message-action-favor" ng-show="{{tweet.favorited}}">取消收藏</span>
-							<span class="message-action-favor" ng-hide="{{tweet.favorited}}">收藏</span> -->
+							<span class="message-action-favor" ng-show="{{tweet.favorited}}">取消收藏</span>
+							<span class="message-action-favor" ng-hide="{{tweet.favorited}}">收藏</span>
 						</div>
 
-						<div class="message-comment-panel" ng-show="cPanelShow[$index]">
+						<div class="message-comment-panel">
 							<fieldset>
 								<legend>评论列表</legend>
 								<div class="input-group">
-								          <input type="text" class="form-control" id="cm{{$index}}">
+								          <input type="text" class="form-control" id="cm-text">
 								          <span class="input-group-btn">
-								            <button class="btn btn-default" type="button" ng-click="createComment(tweet.mid, $index)">评论</button>
+								            <button class="btn btn-default" type="button" ng-click="createComment(tweet.mid, 'cm-text')">评论</button>
 								          </span>
 								</div>	
 								
 								<!-- 评论列表 -->
-								<div id="cmlist{{$index}}">
+								<div>
 								<!-- 	<p style="text-align:center;" class="text-info" ng-show="checkShow(comments['0'])">loading comments...</p> -->
-									<p ng-repeat="comment in comments[$index]"><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>								
+									<p ng-repeat="comment in comments"><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>								
 								</div>		
 								<!-- end -->					
 							
@@ -65,10 +60,10 @@
 								<div class="row" ng-show="true">
 				 					<div class="col-xs-2 pagination-info col-xs-offset-3">
 										<ul class="pagination">
-									        <li ng-class="{disabled:cPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].bPage!=cPage[$index]}" ><a ng-click="showComments(tweet.mid, cPageDirect[$index].bPage, $index)">«</a></li>
-									        <li class="disabled"><a  disabled href="javascript:void(0);" ng-bind="cPage[$index]"> <span class="sr-only">(current)</span></a></li>
+									        <li ng-class="{disabled:cPageDirect.bPage == cPage, active:cPageDirect.bPage!=cPage}" ><a ng-click="showComments(tweet.mid, cPageDirect.bPage)">«</a></li>
+									        <li class="disabled"><a  disabled href="javascript:void(0);" ng-bind="cPage"> <span class="sr-only">(current)</span></a></li>
 									        
-									        <li ng-class="{disabled:fPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].fPage!=cPage[$index]}"><a ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)">»</a></li>
+									        <li ng-class="{disabled:fPageDirect.bPage == cPage, active:cPageDirect.fPage!=cPage}"><a ng-click="showComments(tweet.mid, cPageDirect.fPage)">»</a></li>
 									     </ul>
 									</div>
 				 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
@@ -82,7 +77,7 @@
 						 						</div>							
 				 							</div> -->
 					 						<div class="col-xs-6" style="line-height: 34px;">
-								            		共有<span class="text-info"><strong>{{cPageSum[$index]}}</strong></span>页数
+								            		共有<span class="text-info"><strong>{{cPageSum}}</strong></span>页数
 					 						</div>
 				 						</div>
 									</div> 
@@ -97,45 +92,7 @@
 				</div>
 
 			</div>
-			<div class="row" ng-show="true">
-					
- 					<div class="col-xs-2 pagination-info col-xs-offset-3">
-						<ul class="pagination">
-					        <li ng-class="{disabled:pageDirect.bPage == page, active:pageDirect.bPage!=page}"><a  href="#/tweets/page/{{pageDirect.bPage}}/uid/{{uid}}">«</a></li>
-					        <li class="disabled"><a  disabled href="javascript:void(0);">{{page}} <span class="sr-only">(current)</span></a></li>
-					        
-					        <li ng-class="{disabled:pageDirect.fPage == page, active:pageDirect.fPage!=page}"><a href="#/tweets/page/{{pageDirect.fPage}}/uid/{{uid}}">»</a></li>
-					     </ul>
-					</div>
-					
-					
- 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
- 						<div class="row">
- 							<div class="col-xs-6">
-	 	 	 					<div class=" input-group">
-		 					 	  <input type="text" class="form-control" ng-model="pageGo">
-						          <span class="input-group-btn">
-				            		<a class="btn btn-default" href="#/tweets/page/{{pageGo}}/uid/{{uid}}" >跳到</a>
-						          </span>						
-		 						</div>							
- 							</div>
 
-	 						<div class="col-xs-6" style="line-height: 34px;">
-		 						
-							
-						         
-				            		共有<span class="text-info"><strong ng-bind="pageSum"></strong></span>页数
-						          				
-		 					 						
-	 						</div>
-					
- 						</div>
-
-				   
-					</div> 
-					
-					
-			</div>
 
 		</div> 
 		
