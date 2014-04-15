@@ -12,9 +12,9 @@
 
 								<!-- 评论列表 -->
 								<div class="row">
-									<div class="col-xs-12 comment" ng-repeat="comment in OutComments">
+									<div class="col-xs-12 comment " ng-repeat="comment in OutComments">
 										<span class="badge"><a href="" ng-bind-html="comment.status.text"></a></span>
-										<p ><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
+										<p ><span class="text-info"><a href="weibo/blogger.jsp#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="weibo/blogger.jsp#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
 																
 									</div>									
 								</div>
@@ -65,7 +65,7 @@
 								<div class="row">
 									<div class="col-xs-12 comment" ng-repeat="comment in InComments">
 										<span class="badge" ng-show="checkShow(comment.status)"><a href="" ng-bind-html="comment.status.text"></a></span>
-										<p ><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
+										<p ><span class="text-info"><a href="weibo/blogger.jsp#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="weibo/blogger.jsp#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
 																
 									</div>									
 								</div>	

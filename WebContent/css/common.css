@@ -4,6 +4,19 @@
 	margin: 0px 0px;
 }
 
+.modal {
+	z-index: 9999999;
+}
+
+.triangle-up {
+
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid red;
+}
+
 
 #header{
 	background: white;
@@ -84,7 +97,7 @@
 
 @media screen and (max-width: 768px) {
   .bg-col-autoresize {
-    width: 95%;
+    width: 100%;
 
   }
 }
@@ -93,7 +106,7 @@
 
 @media only handheld {
 	.bg-col-autoresize {
-		width: 95%;
+		width: 100%;
 	}
 }
 

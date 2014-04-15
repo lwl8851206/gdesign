@@ -1,8 +1,11 @@
 package gdesign.helper;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ import weibo4j.Users;
 import weibo4j.http.ImageItem;
 import weibo4j.model.Comment;
 import weibo4j.model.CommentWapper;
+import weibo4j.model.Emotion;
 import weibo4j.model.Favorites;
 import weibo4j.model.Paging;
 import weibo4j.model.Status;
@@ -137,6 +141,7 @@ public class WeiboHelper{
 		ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();	
 		LOG.debug("you are requesting info of page" + page);
 		try {
+			
 			StatusWapper sw = this.timeline.getFriendsTimeline(0, 0, new Paging(page, count));
 			Iterator<Status> ite = sw.getStatuses().iterator();
 			
@@ -904,6 +909,71 @@ public class WeiboHelper{
 		jsonObj = JSONObject.fromObject(map);
 		return jsonObj;		
 	}
+	
+	public String getEmotions () {
+		String result = "";
+		String temp = "";
+//		byte [] bt = new byte[1024];
+//		int len = 0;
+//		String emotionConfig = "emotion.json";
+//		BufferedInputStream inBuf = null;
+		List <Emotion> es = null;
+		FileOutputStream out = null;
+		try {
+//			inBuf = new BufferedInputStream(Thread.currentThread().getContextClassLoader().getResourceAsStream(emotionConfig));
+//			while((len = inBuf.read(bt)) != -1) {
+//				result += new String(bt, 0 , len);
+//			}
+			JSONObject NCEmotions = new JSONObject();
+			JSONObject CEmotions = new JSONObject();
+			JSONObject emotions = new JSONObject();
+			out = new FileOutputStream("./emotion.json");
+
+			es = this.timeline.getEmotions();
+			
+			
+			for (Emotion e : es) {
+				System.out.println("phrase: " + e.getPhrase());
+				if (e.isCommon())
+					CEmotions.accumulate(e.getPhrase(), emotionToJson(e));
+				else
+					NCEmotions.accumulate(e.getPhrase(), emotionToJson(e));
+			}
+			emotions.accumulate("c", CEmotions);
+			emotions.accumulate("nc", NCEmotions.toString());
+			out.write(emotions.toString().getBytes());
+			
+		} catch ( IOException | WeiboException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return result;
+
+	}
+	
+	/**
+	 * 表情转换成json
+	 * @param e
+	 * @return
+	 */
+	public static JSONObject emotionToJson(Emotion e) {
+		JSONObject jsonObj = null;
+		HashMap map = new HashMap();
+		map.put("type", e.getType());
+		map.put("url", e.getUrl());
+		map.put("phrase", e.getPhrase());
+		map.put("common", e.isCommon());
+		jsonObj =JSONObject.fromObject(map);
+		return jsonObj;
+	}	
+	
 	
 	
 	static class LinkDeal {

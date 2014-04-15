@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/gdesign/";
+%>
+
 <!DOCTYPE html>
 <html ng-app="phonecatApp">
 <head>
@@ -7,19 +14,33 @@
 	<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
 	<link rel="stylesheet" href="../css/common.css" type="text/css">
 	<title>Home</title>
+	<base href="<%= basePath%>">	
 	<style>
 
-
+		
+		.person-detailed {
+			border-left : 3px  solid yellowgreen; 
+		}
+		
+		
+		@media all and (max-width: 280px) {
+			.xs-case {
+				width: 100%;
+			}
+			.head-img {
+				margin-bottom: 10px;
+			}
+		}
 	</style>
 </head>
 
 <body>
 	<header  id="header">
-		<div class="header-container navbar-fixed-top">
-			<nav class="container ">
+		<div class="header-container navbar-fixed-top navbar-inverse">
+			<nav class="container navbar-inverse">
 				<ul class="nav nav-pills">
 					<li class="header-home">
-						<a href="index.html" >
+						<a href="weibo/index.jsp" >
 							<span class="glyphicon glyphicon-home"></span>
 						</a>
 					</li>
@@ -29,16 +50,16 @@
 							<span class="glyphicon glyphicon-user">do_once_long</span>
 						</a>
 	  					<ul class="dropdown-menu" role="menu">
-						    <li><a href="friendship.html#/friends">关注的人</a></li>
-						    <li><a href="commentlist.html">评论列表</a></li>
-						    <li><a href="friendship.html#/followers">粉丝</a></li>
+						    <li><a href="weibo/friendship.jsp#/friends">关注的人</a></li>
+						    <li><a href="weibo/commentlist.jsp">评论列表</a></li>
+						    <li><a href="weibo/friendship.jsp#/followers">粉丝</a></li>
 						    <li class="divider"></li>
-						    <li><a href="blogger.html">我的主页</a></li>
+						    <li><a href="weibo/blogger.jsp">我的主页</a></li>
 	  					</ul>
 					</li>
 
 					<li class="header-write-blog">
-						<a href="writeblog.html" title="write blog" >
+						<a href="weibo/writeblog.jsp" title="write blog" >
 							<span class="glyphicon glyphicon-pencil"></span>
 						</a>
 					</li>
@@ -92,12 +113,12 @@
 			<div class="col-xs-12 text-center text-muted">归伟龙所有</div>
 		
 	</footer>
-  	<script src="lib/angular/angular.js"></script>
-  	<script src="lib/angular/angular-route.js"></script>
-	<script type="text/javascript" src="../js/jquery.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<script src="js/friendshipapp.js"></script>
-  	<script src="js/friendshipcontrollers.js"></script>
+  	<script src="weibo/lib/angular/angular.js"></script>
+  	<script src="weibo/lib/angular/angular-route.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script src="weibo/js/friendshipapp.js"></script>
+  	<script src="weibo/js/friendshipcontrollers.js"></script>
 
 </body>
 </html>

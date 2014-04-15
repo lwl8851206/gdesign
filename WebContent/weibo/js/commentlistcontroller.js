@@ -70,7 +70,7 @@ commentListControllers.controller('CommentListCtrl', ['$scope', 'pageSum', 'page
 	$scope.showInComments = function(page, count) {
 		$scope.InPage = page;
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/comment/showInComments.do",
+			url : "comment/showInComments.do",
 			data : {
 				"page" : page,
 				"count" : count
@@ -97,7 +97,7 @@ commentListControllers.controller('CommentListCtrl', ['$scope', 'pageSum', 'page
 	$scope.showOutComments = function(page, count) {
 		$scope.OutPage = page;
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/comment/showOutComments.do",
+			url : "comment/showOutComments.do",
 			data : {
 				"page" : page,
 				"count" : count

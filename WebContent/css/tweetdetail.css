@@ -1,13 +1,37 @@
-@CHARSET "UTF-8";
-
 .message-comment-panel {
   -webkit-transition:all linear 0.5s;
+  -o-transition:all linear 0.5s;
+  -moz-transition:all linear 0.5s;
   transition:all linear 0.5s;
   display:block;
   line-height:20px;
   opacity:1;
 }
 
+.message-comment-panel .slide-up-cp a{
+	cursor: poiner;
+	font-size: 6px;
+}
+
+.cm-list {
+	padding-top: 15px;
+	padding-bottom:10px;	
+}
+
+/*评论分页控件*/
+
+.nxs-cm-pagination {
+	display: block;
+}
+
+.xs-cm-pagination {
+	display: none;
+}
+
+.nxs-pagination {
+	padding-top: 15px;
+	padding-bottom:10px;	
+}
 
 
 .message article{
@@ -21,22 +45,58 @@
 .message .message-owner {
 	padding: 5px 5px;
 	border-bottom: 2px solid #e5e5e5;
+	font-family: 宋体;
 }
 
 .message .message-owner img {
 	-webkit-border-radius: 50% 50%;
+	
 }
 
 .message .message-content {
 	padding: 10px 10px;
+	font-family: 微软雅黑;
 	text-align: left;
 
 }
 
-.message .message-content img{
-	margin-bottom: 10px;
-
+.message .message-content .img-group {
+	width: 350px;
 }
+
+.message .message-content .img-wrap{
+ 	margin-bottom: 10px;
+	margin-right: 10px; 
+	position: relative;
+	float: left;
+}
+
+.message-content .img-wrap {
+ 	width: 100px;
+	height: 100px; 
+	background: url(../img/loading.gif) no-repeat;
+	background-size: 20% 20%;
+ 	background-position: 40% 40%; 
+}
+
+.message-content .img-wrap{
+	/* border: 5px solid yellow; */
+}
+
+.message-content .img-wrap img {
+	-webkit-transition:all linear 0.2s;
+	display: none;
+	cursor: pointer;
+}
+
+.message-content .img-wrap img:hover{
+	opacity: 0.5;
+}
+
+.image img {
+	margin: auto auto;
+}
+
 
 .message .message-content p{
 	word-wrap: break-word;
@@ -64,25 +124,33 @@
 }
 
 .message-action span{
-	-webkit-transition: background 1s linear;
 	cursor: pointer;
+	color: #000000;
+}
+
+.message-action .dropdown-menu {
+	
+	padding: 0px 0px ;
+	right: 0px !important;
+}
+
+.message-action .dropdown-menu li {
+	color: black;
+	-webkit-transition: all linear .5s;
+	-o-transition: all linear .5s;
+	-moz-transition: all linear .5s;
+	transition: all linear .5s;
+	
+}
+
+.message-action .dropdown-menu li:hover{
+	background: #330000;
+}
+
+.message-action .dropdown-menu li:hover span{
 	color: white;
-	display: block;
-	float: left;
-	width: 24px;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	padding: 5px;
-	margin-left: 5px;
-	*background: green;
-	background-image: linear-gradient(to bottom,#a21333 10%,#103838 70%);
-	background-image: -webkit-linear-gradient(to bottom,#a21333 10%,#103838 70%);
+	
 }
-
-.message-action span:hover {
-	background: green;
-}
-
 
 .message-comment-panel {
 	min-height: 20px;
@@ -93,6 +161,10 @@
 	background-image: linear-gradient(to bottom,#ffffff 20%, #e5e5e5 100%);
 	background-image: -webkit-linear-gradient(to bottom,#ffffff 20%, #e5e5e5 100%);
 	background-repeat: repeat-x;
+}
+
+.message-footer small {
+	vertical-align: top;
 }
 
 /*media query*/
@@ -110,35 +182,59 @@
 		margin-left: 3px;
 	}
 
-	.message .message-content img{
-		width: 100%;
-		height: 100%;
+	.message .message-content .img-wrap{
+		display: none;
+	}
+
+	.message .message-content .img-wrap:first-child{
+		display: block;
+		width: 100px;
+		height: 100px;
+	}
+	
+	.message .message-content .img-group {
+		width: 110px;
+	}
+	
+	.message .message-content .img-group:after {
+		cursor: pointer;
+		background: rgba(0,0,0,0.9);
+		color: white;
+		font-size: 0.9em;
+		content: "see more";
+		display	:block;
+		width : 100px;
+		height: 20px;
+		line-height: 20px;
+		position : absolute;
+		margin-top: 80px;
 	}
 
 	.message .message-owner span {
 		font-size: 10px;
 	}
-
+	
+	.xs-cm-pagination {
+		display: block;
+	}
+	
+	.nxs-cm-pagination  {
+		display: none;
+	}
 
 }
 
 @media all and (max-width: 580px) and (min-width: 341px){
 
-
-	.message-action span{
-		display: block;
-		font-size: 12px;
-		width: 15px;
-		height: 32px;
-		padding: 1px;
-		margin-left: 3px;
+	
+	.message .message-content .img-wrap{
+		width: 100px;
+		height: 100px;
 	}
-
-	.message .message-content img{
-		width: 45%;
-		height: 100%;
+	
+	.message .message-content .img-group {
+		width: 250px;
 	}
-
 
 }
 

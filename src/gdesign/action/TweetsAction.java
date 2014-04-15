@@ -180,6 +180,13 @@ public class TweetsAction extends WeiboAction{
 		return SUCCESS;			
 	}
 	
+	public String showEmotion() {
+		WeiboHelper wh = this.getWeiboHelper();
+		String result = wh.getEmotions();
+		this.setResult(result);
+		return SUCCESS;				
+	}
+	
 	
 
 }

@@ -69,7 +69,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 		$scope.cPage = (cP == null) ? 1 : cP;
 		$scope.comments = {};
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/comment/showComments.do",
+			"url" : "comment/showComments.do",
 			"data" : {
 				"page" : $scope.cPage,
 				"count" : 10,
@@ -98,7 +98,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 		var inputArea = jQuery("#cm-text");
 		var text = inputArea.val();
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/comment/createComment.do",
+			"url" : "comment/createComment.do",
 			"data" : {
 				"mid" : mid,
 				"comment" : text
@@ -124,7 +124,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	$scope.destroyTweet = function(mid) {
 		
 //		jQuery.ajax({
-//			"url" : "http://localhost:8080/gdesign/tweet/destroyTweet.do",
+//			"url" : "tweet/destroyTweet.do",
 //			"data" : {
 //				"mid" : mid,
 //			},
@@ -139,7 +139,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	//收藏微薄
 	$scope.createFavorite = function(mid) {
 //		jQuery.ajax({
-//		"url" : "http://localhost:8080/gdesign/favorite/createFavorite.do",
+//		"url" : "favorite/createFavorite.do",
 //		"data" : {
 //			"mid" : mid,
 //		},
@@ -154,7 +154,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	//取消收藏微薄
 	$scope.destroyFavorite = function(mid) {
 //		jQuery.ajax({
-//		"url" : "http://localhost:8080/gdesign/favorite/destroyFavorite.do",
+//		"url" : "favorite/destroyFavorite.do",
 //		"data" : {
 //			"mid" : mid,
 //		},
@@ -169,7 +169,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	$scope.retweet = function(mid, text) {
 		console.log("mid :" + mid);
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/tweet/repostTweet.do",
+			"url" : "tweet/repostTweet.do",
 			"data" : {
 				"mid" : mid,
 				"text" : text
@@ -197,7 +197,7 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	
 	$scope.showTweet = function(mid) {
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/tweet/showTweet.do",
+			url : "tweet/showTweet.do",
 			data : {
 				"mid" : mid
 			},

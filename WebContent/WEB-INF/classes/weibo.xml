@@ -9,9 +9,9 @@
 				
 		<action name="publishTweet" class="gdesign.action.TweetsAction" method="publishTweet">	
 			<param name="token">2.00Hxm1EChbguxCba972c1a42AMr19D</param>
-			<result name="success" type="redirect">/weibo/index.html</result>
-			<result name="login" type="redirect">/weibo/writeblog.html</result>
-			<result name="input" type="redirect">/weibo/writeblog.html</result>
+			<result name="success" type="redirect">/weibo/index.jsp</result>
+			<result name="login" type="redirect">/weibo/writeblog.jsp</result>
+			<result name="input" type="redirect">/weibo/writeblog.jsp</result>
 		</action>
 	</package>
 

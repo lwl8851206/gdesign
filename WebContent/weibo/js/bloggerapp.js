@@ -11,11 +11,11 @@ phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/userinfo', {
-        templateUrl: 'partials/bloggertp.html',
+        templateUrl: 'weibo/partials/bloggertp.html',
         controller: 'BloggerCtrl'
       }).
       when('/userinfo/:uid', {
-          templateUrl: 'partials/bloggertp.html',
+          templateUrl: 'weibo/partials/bloggertp.html',
           controller: 'BloggerCtrl'
       }).
       otherwise({

@@ -49,7 +49,7 @@ friendshipControllers.controller('FollowerListCtrl', ['$scope', '$routeParams', 
 	$scope.page = ($routeParams.page == null) ? 1 : $routeParams.page;
 	$scope.type = "followers";
 	jQuery.ajax({
-		url : "http://localhost:8080/gdesign/friendship/showFollowers.do",
+		url : "friendship/showFollowers.do",
 		data : {
 			"page" : $scope.page,
 			"uid" : "1896325745"
@@ -77,7 +77,7 @@ friendshipControllers.controller('FriendListCtrl', ['$scope', '$routeParams', 'p
   	$scope.page = ($routeParams.page == null) ? 1 : $routeParams.page;
   	$scope.type = "friends";
   	jQuery.ajax({
-  		url : "http://localhost:8080/gdesign/friendship/showFriends.do",
+  		url : "friendship/showFriends.do",
   		data : {
   			"page" : $scope.page,
   			"uid" : "1896325745"

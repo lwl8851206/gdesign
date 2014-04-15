@@ -41,6 +41,14 @@ tweetControllers.factory("pageDirection", function pageDirection() {
 	}
 });
 
+//tweetControllers.factory("imgResize", function imgResize(target) {
+//	var imgWrap = jQuery(target);
+//
+//	var expandWhich = img.height > img.width ? "height" : "width";
+//	if (parseInt(imgWrap.style.height.split("p")[0]) < img[expandWhich])
+//		img["style"][expandWhich] = "100%";
+//});
+
 
 
 
@@ -80,7 +88,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 		$scope.cPage[index] = (cP == null) ? 1 : cP;
 		$scope.comments = {};
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/comment/showComments.do",
+			"url" : "comment/showComments.do",
 			"data" : {
 				"page" : $scope.cPage[index],
 				"count" : 10,
@@ -109,7 +117,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 		var inputArea = jQuery("#cm" + index);
 		var text = inputArea.val();
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/comment/createComment.do",
+			"url" : "comment/createComment.do",
 			"data" : {
 				"mid" : mid,
 				"comment" : text
@@ -136,7 +144,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	$scope.destroyTweet = function(mid) {
 		
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/tweet/destroyTweet.do",
+			"url" : "tweet/destroyTweet.do",
 			"data" : {
 				"mid" : mid,
 			},
@@ -156,7 +164,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	//收藏微薄
 	$scope.createFavorite = function(mid) {
 //		jQuery.ajax({
-//		"url" : "http://localhost:8080/gdesign/favorite/createFavorite.do",
+//		"url" : "favorite/createFavorite.do",
 //		"data" : {
 //			"mid" : mid,
 //		},
@@ -171,7 +179,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	//取消收藏微薄
 	$scope.destroyFavorite = function(mid) {
 //		jQuery.ajax({
-//		"url" : "http://localhost:8080/gdesign/favorite/destroyFavorite.do",
+//		"url" : "favorite/destroyFavorite.do",
 //		"data" : {
 //			"mid" : mid,
 //		},
@@ -186,7 +194,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 	$scope.retweet = function(mid, text) {
 		console.log("mid :" + mid);
 		jQuery.ajax({
-			"url" : "http://localhost:8080/gdesign/tweet/repostTweet.do",
+			"url" : "tweet/repostTweet.do",
 			"data" : {
 				"mid" : mid,
 				"text" : text
@@ -212,16 +220,16 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 		
 	}
 	
-	
+	//显示微薄列表
 	$scope.showAllTweets = function() {
 		
 		if ($scope.uid == null) {
 			jQuery.ajax({
-				url : "http://localhost:8080/gdesign/tweet/showAllTweets.do",
+				url : "tweet/showAllTweets.do",
 				data : {
 					"page" : $scope.page
 				},
-				"beforeSend" : function() {
+				beforeSend : function() {
 					jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
 				},			
 				async : true,
@@ -243,7 +251,73 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 							for (var i = 0; i < len; i++) {
 								scope.cPanelShow.push(false);
 							}
-						}					
+						}		
+						
+						//若angular模版解析完毕，则开始jquery的插件事件绑定
+						var tm = setInterval(function() {
+							//判断是否解析完
+							if (jQuery("[id^='tweet']").size() > 0) {
+								clearInterval(tm);
+								
+								//动态夹在图片插件启动
+								jQuery("[id^='tweet']").loadImages();
+								
+								//图片轮播插件启动
+								
+								
+								jQuery(".img-wrap").click(function() {
+									var _ = this;
+									
+									jQuery(_)
+									.parentsUntil('.message')
+									.siblings('.modal')
+									.find(".lazy")
+									.slick({
+										  lazyLoad: 'progressive',
+										  slidesToShow: 1,
+										  slidesToScroll: 1
+									 });
+
+								});
+
+/*								jQuery('.slider').slick({
+								  dots: true,
+								  infinite: false,
+								  speed: 300,
+								  slidesToShow: 1,
+								  slidesToScroll: 1,
+								  responsive: [
+								    {
+								      breakpoint: 1024,
+								      settings: {
+								        slidesToShow: 2,
+								        slidesToScroll: 2,
+								        infinite: false,
+								        dots: true
+								      }
+								    },
+								    {
+								      breakpoint: 600,
+								      settings: {
+								        slidesToShow: 2,
+								        slidesToScroll: 2
+								      }
+								    },
+								    {
+								      breakpoint: 480,
+								      settings: {
+								        slidesToShow: 1,
+								        slidesToScroll: 1
+								      }
+								    }
+								  ]
+								});*/
+													
+							}
+								
+
+						}, 1000);
+						
 					});			
 					
 				}
@@ -251,7 +325,7 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 		}
 		else {
 			jQuery.ajax({
-				url : "http://localhost:8080/gdesign/tweet/showOnesTweets.do",
+				url : "tweet/showOnesTweets.do",
 				data : {
 					"page" : $scope.page,
 					"uid" : $scope.uid

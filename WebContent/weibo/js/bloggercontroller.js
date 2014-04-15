@@ -13,7 +13,7 @@ bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
 	$scope.createFriend = function(uid) {
 	
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/friendship/follow.do",
+			url : "friendship/follow.do",
 			data : {
 				"uid" : $scope.uid
 			},
@@ -36,7 +36,7 @@ bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
 	//取消关注当前用户
 	$scope.destroyFriend = function(uid) {
 		jQuery.ajax({
-			url : "http://localhost:8080/gdesign/friendship/destroyFriend.do",
+			url : "friendship/destroyFriend.do",
 			data : {
 				"uid" : $scope.uid
 			},
@@ -57,15 +57,28 @@ bloggerControllers.controller('BloggerCtrl', ['$scope', '$routeParams',
 	
 	//取得用户数据
 	jQuery.ajax({
-		url : "http://localhost:8080/gdesign/user/showUserInfo.do",
+		url : "user/showUserInfo.do",
 		data : {
 			"uid" : $scope.uid
 		},
 		async : true,
 		success : function(data) {
+			
 			$scope.$apply(function(scope) {
 				var jsonData = eval("(" + data + ")");
 				if (jsonData != null) {
+					
+					//获取大的头像
+					var imgArr = jsonData["profile_image_url"].split("/");
+					imgArr[4] = "180";
+					jsonData["profile_image_url"] = imgArr.join("/");
+					
+					//性别
+					jsonData["gender"] = jsonData["gender"] == "f" ? "女" : "男";
+					
+					//在线状态
+					jsonData["online_status"] = jsonData["online_status"] == 0 ? "不在线上" : "在线";
+					
 					$scope.user = jsonData;
 				}				
 			});	

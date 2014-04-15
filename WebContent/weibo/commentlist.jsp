@@ -1,3 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/gdesign/";
+%>
 <!DOCTYPE html >
 <html ng-app="commentListControllers">
 <head>
@@ -7,6 +13,7 @@
 	<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
 	<link rel="stylesheet" href="../css/common.css" type="text/css">
 	<title>Home</title>
+	<base href="<%= basePath%>">
 	<style>
 		.badge-new {
 		  display: inline-block;
@@ -39,30 +46,30 @@
 
 <body>
 	<header  id="header">
-		<div class="header-container navbar-fixed-top">
-			<nav class="container ">
+		<div class="header-container navbar-fixed-top navbar-inverse">
+			<nav class="container navbar-inverse">
 				<ul class="nav nav-pills">
 					<li class=" header-home">
-						<a href="index.html" >
+						<a href="weibo/index.jsp" >
 							<span class="glyphicon glyphicon-home"></span>
 						</a>
 					</li>
 
 					<li class="header-blogger">
-						<a href="#blogger" title="blogger" class="dropdown-toggle" data-toggle="dropdown">
+						<a title="blogger" class="dropdown-toggle" data-toggle="dropdown">
 							<span class="glyphicon glyphicon-user">do_once_long</span>
 						</a>
 	  					<ul class="dropdown-menu" role="menu">
-						    <li><a href="friendship.html#/friends">关注的人</a></li>
-						    <li><a href="commentlist.html">评论列表</a></li>
-						    <li><a href="friendship.html#/followers">粉丝</a></li>
+						    <li><a href="weibo/friendship.jsp#/friends">关注的人</a></li>
+						    <li><a href="weibo/commentlist.jsp">评论列表</a></li>
+						    <li><a href="weibo/friendship.jsp#/followers">粉丝</a></li>
 						    <li class="divider"></li>
-						    <li><a href="blogger.html">我的主页</a></li>
+						    <li><a href="weibo/blogger.jsp">我的主页</a></li>
 	  					</ul>
 					</li>
 
 					<li class="header-write-blog">
-						<a href="writeblog.html" title="write blog" >
+						<a href="weibo/writeblog.jsp" title="write blog" >
 							<span class="glyphicon glyphicon-pencil"></span>
 						</a>
 					</li>
@@ -87,9 +94,9 @@
 
 								<!-- 评论列表 -->
 								<div class="row">
-									<div class="col-xs-12 comment" ng-repeat="comment in OutComments">
-										<span class="badge-new">From <a href="tweetdetail.html#/tweet/{{comment.status.mid}}" ng-bind-html="comment.status.text | substr : '20'"></a></span>
-										<p ><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
+									<div class="col-xs-12 comment glyphicon glyphicon-copyright-mark" ng-repeat="comment in OutComments">
+										<span class="badge-new">From <a href="weibo/tweetdetail.jsp#/tweet/{{comment.status.mid}}" ng-bind-html="comment.status.text | substr : '20'"></a></span>
+										<p ><span class="text-info"><a href="weibo/blogger.jsp#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="weibo/blogger.jsp#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
 																
 									</div>									
 								</div>
@@ -138,9 +145,9 @@
 
 								<!-- 评论列表 -->
 								<div class="row">
-									<div class="col-xs-12 comment" ng-repeat="comment in InComments">
-										<span class="badge-new" ng-show="checkShow(comment.status)">From <a href="tweetdetail.html#/tweet/{{comment.status.mid}}" ng-bind-html="comment.status.text | substr : '20'"></a></span>
-										<p ><span class="text-info"><a href="blogger.html#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="blogger.html#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
+									<div class="col-xs-12 comment glyphicon glyphicon-copyright-mark" ng-repeat="comment in InComments">
+										<span class="badge-new" ng-show="checkShow(comment.status)">From <a href="weibo/tweetdetail.jsp#/tweet/{{comment.status.mid}}" ng-bind-html="comment.status.text | substr : '20'"></a></span>
+										<p ><span class="text-info"><a href="weibo/blogger.jsp#/userinfo/{{comment.user.id}}">{{comment.user.screen_name}}</a></span><span ng-show="checkShow(comment.reply_comment.user.screen_name)"> 回复 <a href="weibo/blogger.jsp#/userinfo/{{comment.reply_comment.user.id}}">{{comment.reply_comment.user.screen_name}}</a></span>: {{comment.text}}</p>	
 																
 									</div>									
 								</div>	
@@ -206,12 +213,12 @@
 			<div class="col-xs-12 text-center text-muted">归伟龙所有</div>
 		
 	</footer>
-  	<script src="lib/angular/angular.js"></script>
-  	<script src="lib/angular/angular-route.js"></script>
-  	<script src="lib/angular/angular-sanitize.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-  	<script src="js/commentlistcontroller.js"></script>
+  	<script src="weibo/lib/angular/angular.js"></script>
+  	<script src="weibo/lib/angular/angular-route.js"></script>
+  	<script src="weibo/lib/angular/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+  	<script src="weibo/js/commentlistcontroller.js"></script>
 
 </body>
 </html>

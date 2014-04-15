@@ -11,11 +11,11 @@ phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/tweets', {
-        templateUrl: 'partials/tweettp.html',
+        templateUrl: 'weibo/partials/tweettp.html',
         controller: 'TweetListCtrl'
       }).
       when('/tweets/page/:page/uid/:uid', {
-        templateUrl: 'partials/tweettp.html',
+        templateUrl: 'weibo/partials/tweettp.html',
         controller: 'TweetListCtrl'
       }).
       otherwise({
