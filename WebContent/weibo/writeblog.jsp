@@ -3,58 +3,18 @@
     
 <%
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/gdesign/";
+
+	if (session.getAttribute("token") == null)
+		response.sendRedirect("https://api.weibo.com/oauth2/authorize?client_id=2717579641&redirect_uri=" + basePath +  "o/oauth.do&response_type=code&state=shit");
 %>
 
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0" />
-	<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
-	<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
-	<link rel="stylesheet" href="../css/common.css" type="text/css">
-	<title>Home</title>
-	<base href="<%= basePath%>">
-	<style>
 
-
-	</style>
-</head>
-
-<body>
-	<header  id="header" >
-		<div class="header-container navbar-fixed-top navbar-inverse">
-			<nav class="container navbar-inverse">
-				<ul class="nav nav-pills">
-					<li class="header-home">
-						<a href="weibo/index.jsp" >
-							<span class="glyphicon glyphicon-home"></span>
-						</a>
-					</li>
-
-					<li class="header-blogger">
-						<a href="javascript:void(0);" title="blogger" class="dropdown-toggle" data-toggle="dropdown">
-							<span class="glyphicon glyphicon-user">do_once_long</span>
-						</a>
-	  					<ul class="dropdown-menu" role="menu">
-						    <li><a href="weibo/friendship.jsp#/friends">关注的人</a></li>
-						    <li><a href="weibo/commentlist.jsp">评论列表</a></li>
-						    <li><a href="weibo/friendship.jsp#/followers">粉丝</a></li>
-						    <li class="divider"></li>
-						    <li><a href="weibo/blogger.jsp">个人信息</a></li>
-	  					</ul>
-					</li>
-
-					<li class="header-write-blog active ">
-						<a href="weibo/writeblog.jsp" title="write blog" >
-							<span class="glyphicon glyphicon-pencil"></span>
-						</a>
-					</li>
-
-				</ul>
-			</nav>
-		</div>
-	</header>
+	<jsp:include page="header.jsp">
+		<jsp:param value="write" name="activeitem"/>
+		<jsp:param value="write tweet" name="title"/>
+	</jsp:include>
 
 	<section id="content">
 		<div class="container">
@@ -97,13 +57,8 @@
 			</div>
 		</div>
 	</section>
-<footer id="footer">
-
-			<div class="col-xs-12 text-center text-muted">归伟龙所有</div>
-		
-	</footer>
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	
+	<jsp:include page="footer.jsp"></jsp:include>
 
 </body>
 </html>

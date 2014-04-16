@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.jni.Mmap;
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
@@ -128,6 +129,26 @@ public class WeiboHelper{
 		this.token = token;
 		this.addModules("account", "timeline", "comments", "friendships", "users", "shorturl", "favorite");
 	}
+	
+	public HashMap getAccount() {
+		HashMap map = new HashMap();
+		String uid = null;
+		try {
+			
+			uid = this.account.getUid().getString("uid");
+			String screenName = this.users.showUserById(uid).getScreenName();
+			map.put("uid", uid);
+			map.put("screen_name", screenName);
+			
+
+		} catch (JSONException |WeiboException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+	
 	
 	/**
 	 * 获得当前用户和其所关注的用户的最新微博
@@ -267,6 +288,8 @@ public class WeiboHelper{
 	 * @return String
 	 */
 	public String publishTweet(String text) {
+		LOG.debug("--------------------------");
+		LOG.debug("即将发布的微波" + text);
 		Status st = null;
 		try {
 			st = this.timeline.UpdateStatus(text);
@@ -305,6 +328,10 @@ public class WeiboHelper{
 	
 	
 	public String publishTweet(String text, File f) {
+		
+		for (int i = 0; i < 5; i++)
+			System.out.println("-------------------");
+		
 		Status st = null;
 		try {
 			try {

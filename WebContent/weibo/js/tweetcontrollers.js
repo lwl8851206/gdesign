@@ -54,7 +54,7 @@ tweetControllers.factory("pageDirection", function pageDirection() {
 
 tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum', 'pageDirection', 
   function($scope, $routeParams, pageSum, pageDirection) {
-	
+	$scope.userName = jQuery("#user-name").text().trim();
 	$scope.page = ($routeParams.page == null) ? 1 : $routeParams.page;
 	$scope.cPageSum = {};
 	$scope.cPageDirect = {};
@@ -200,13 +200,16 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 				"text" : text
 			},
 			"beforeSend" : function() {
-				jQuery("body").append("<div class='alert alert-success'  style='position:fixed;text-align:center;z-index:99999;top:0px;width:100%;' id='retweethint'>Retweeting......</div>");
+				jQuery("body").append("<div class='loading'></div>");
+				jQuery(".loading").css("height", document.body.scrollHeight + "px");
+				jQuery(".loading").append("<img src='img/loading1.gif'>");
+//				jQuery("#loading").append("<div class='alert alert-success'  style='position:fixed;text-align:center;z-index:99999;top:0px;width:100%;' id='retweethint'>Retweeting......</div>");
 			},
 			"async" : true,
 			"success" : function(data) {
 				//data proccess
 				$scope.$apply(function(scope) {
-					jQuery("#retweethint").val("Completed...").fadeOut(1000, function() {
+					jQuery(".loading").html("Completed...").fadeOut(1000, function() {
 						jQuery(this).remove();
 						jQuery("#retweet-text").val("");
 					});
@@ -230,12 +233,15 @@ tweetControllers.controller('TweetListCtrl', ['$scope', '$routeParams', 'pageSum
 					"page" : $scope.page
 				},
 				beforeSend : function() {
-					jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
+					jQuery("body").append("<div class='loading'></div>");
+					jQuery(".loading").css("height", document.body.scrollHeight + "px");
+					jQuery(".loading").append("<img src='img/loading1.gif'>");
+//					jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
 				},			
 				async : true,
 				success : function(data) {
 					$scope.$apply(function(scope) {
-						jQuery("#tweetshint").val("Completed...").fadeOut(1000, function() {
+						jQuery(".loading").fadeOut(1000, function() {
 							$(this).remove();
 						});
 						var jsonData = eval("(" + data + ")");

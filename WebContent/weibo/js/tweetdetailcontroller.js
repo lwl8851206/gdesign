@@ -123,17 +123,23 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 	//删除微薄
 	$scope.destroyTweet = function(mid) {
 		
-//		jQuery.ajax({
-//			"url" : "tweet/destroyTweet.do",
-//			"data" : {
-//				"mid" : mid,
-//			},
-//			"async" : false,
-//			"success" : function(data) {
-//				//data proccess
-//				jQuery("#tweet" + mid).hide("slow");
-//			}
-//		});	
+		jQuery.ajax({
+			"url" : "tweet/destroyTweet.do",
+			"data" : {
+				"mid" : mid,
+			},
+			beforeSend : function() {
+				jQuery("body").append("<div class='loading'></div>");
+				jQuery(".loading").css("height", document.body.scrollHeight + "px");
+				jQuery(".loading").append("<img src='img/loading1.gif'>");
+//				jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
+			},		
+			"async" : false,
+			"success" : function(data) {
+				//data proccess
+				location.replace("weibo/index.jsp");
+			}
+		});	
 	}
 	
 	//收藏微薄
@@ -201,11 +207,18 @@ tweetdetailController.controller('TweetdetailCtrl', ['$scope', '$routeParams', '
 			data : {
 				"mid" : mid
 			},
-			"beforeSend" : function() {
-				jQuery("body").append("<div class='alert alert-success' style='width:100%;text-align:center;position:fixed;z-index:99999;top:0px;' id='tweetshint'>Loading......</div>");
-			},			
+			beforeSend : function() {
+				
+				jQuery("body").append("<div class='loading'></div>");
+				jQuery(".loading").css("height", document.body.scrollHeight + "px");
+				jQuery(".loading").append("<img src='img/loading1.gif'>");
+			},		
 			async : true,
 			success : function(data) {
+				jQuery(".loading").fadeOut(1000, function() {
+					$(this).remove();
+				});
+				
 				$scope.$apply(function(scope) {
 					jQuery("#tweetshint").val("Completed...").fadeOut(1000, function() {
 						$(this).remove();

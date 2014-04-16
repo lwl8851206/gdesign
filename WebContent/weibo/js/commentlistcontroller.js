@@ -4,7 +4,7 @@
 
 var commentListControllers = angular.module('commentListControllers', ['ngSanitize']);
 
-
+var firstLoad = true;
 /**
  * 返回总页数,确定当前第一页
  */
@@ -75,8 +75,20 @@ commentListControllers.controller('CommentListCtrl', ['$scope', 'pageSum', 'page
 				"page" : page,
 				"count" : count
 			},
+			
+			beforeSend : function() {
+				
+				jQuery("body").append("<div class='loading'></div>");
+				jQuery(".loading").css("height", document.body.scrollHeight + "px");
+				jQuery(".loading").append("<img src='img/loading1.gif'>");
+			},
+			
 			async : true,
 			success : function(data) {
+				jQuery(".loading").fadeOut(1000, function() {
+					$(this).remove();
+				});
+				
 				$scope.$apply(function(scope) {
 					var jsonData = eval("(" + data + ")");
 					if (jsonData != null) {
@@ -102,9 +114,27 @@ commentListControllers.controller('CommentListCtrl', ['$scope', 'pageSum', 'page
 				"page" : page,
 				"count" : count
 			},
+			
+			beforeSend : function() {
+				console.log("firstload:" + firstLoad);
+				if (!firstLoad) {
+					jQuery("body").append("<div class='loading'></div>");
+					jQuery(".loading").css("height", document.body.scrollHeight + "px");
+					jQuery(".loading").append("<img src='img/loading1.gif'>");
+				}
+			},
+			
 			async : true,
 			success : function(data) {
+				if (!firstLoad)
+					jQuery(".loading").fadeOut(1000, function() {
+						$(this).remove();
+						
+						
+					});
+				
 				$scope.$apply(function(scope) {
+					firstLoad = false;
 					var jsonData = eval("(" + data + ")");
 					if (jsonData != null) {
 						

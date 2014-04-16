@@ -48,9 +48,16 @@
 	font-family: 宋体;
 }
 
+
+
 .message .message-owner img {
 	-webkit-border-radius: 50% 50%;
 	
+}
+
+.message .message-owner small {
+	color: #999;
+	margin-left: 10px;
 }
 
 .message .message-content {
@@ -62,11 +69,12 @@
 
 .message .message-content .img-group {
 	width: 350px;
+	position: relative;
 }
 
 .message .message-content .img-wrap{
- 	margin-bottom: 10px;
-	margin-right: 10px; 
+  	margin-bottom: 10px;
+	margin-right: 10px;  
 	position: relative;
 	float: left;
 }
@@ -89,9 +97,7 @@
 	cursor: pointer;
 }
 
-.message-content .img-wrap img:hover{
-	opacity: 0.5;
-}
+
 
 .image img {
 	margin: auto auto;
@@ -108,49 +114,38 @@
 	vertical-align: bottom;
 }
 
-.message .message-footer span {
-	font-weight: bold;
-	font-size: 1.3em;
-	padding-left: 10px;
-}
-
-
 
 .message-action {
-	position: absolute;
-	top: 0px;
-	right: 20px;
-
+	padding:10px 10px 10px 20px;;
 }
 
-.message-action span{
-	cursor: pointer;
-	color: #000000;
+.message-action-remove, .message-action-repost, .message-action-comment {
+	display: inline-block;
+	position: relative;
+	margin-top: 5px;
 }
 
-.message-action .dropdown-menu {
-	
-	padding: 0px 0px ;
-	right: 0px !important;
-}
 
-.message-action .dropdown-menu li {
-	color: black;
+ .message-action .badge{
+	color: white;
 	-webkit-transition: all linear .5s;
 	-o-transition: all linear .5s;
 	-moz-transition: all linear .5s;
 	transition: all linear .5s;
-	
 }
 
-.message-action .dropdown-menu li:hover{
-	background: #330000;
+.m-item {
+	cursor : pointer;
 }
 
-.message-action .dropdown-menu li:hover span{
-	color: white;
-	
-}
+ .m-item:hover .badge{
+ 	background: #330000;
+ }
+ 
+ .m-item:hover .m-item-a {
+ 	color:#31708f;
+ }
+
 
 .message-comment-panel {
 	min-height: 20px;
@@ -163,17 +158,54 @@
 	background-repeat: repeat-x;
 }
 
+ul.pagination {
+	margin-bottom: 0px;
+}
+
 
 
 .message-footer small {
 	vertical-align: top;
+	font-size: 0.7em;
 }
 
 /*media query*/
 
-
+@media only screen {
+	.message-content .img-wrap img:hover{
+		opacity: 0.5;
+	}
+}
 
 @media all and (max-width: 340px) {
+	
+	
+	.message .message-owner a span {
+		font-size: 14px;
+	}
+	
+	.message-action {
+		padding: 0px 0px;
+	}
+	
+	.m-item {
+		width: 14px;
+		height: 14px;
+		font-size: 5px;
+	}
+	
+	.m-item-a {
+		width: 14px;
+	}
+	
+	.m-item .badge{
+ 		display: none;
+ 	}
+ 	
+ 	.glyphicon-retweet:before, .glyphicon-comment:before, .glyphicon-remove:before {
+ 		content: "";
+ 	}
+ 	
 
 	.message-action span{
 		display: block;
@@ -227,15 +259,41 @@
 }
 
 @media all and (max-width: 580px) and (min-width: 341px){
+	
+	
+	.message .message-owner a span {
+		font-size: 14px;
+	}
+	
+	.m-item {
+		font-size: 0.8em;
+	}
+	
+	.m-item .badge{
+ 		font-size: 0.8em;
+ 	}
 
 	
-	.message .message-content .img-wrap{
-		width: 100px;
-		height: 100px;
+	.message .message-content .img-wrap {
+		width: 90px;
+		height: 90px;
+		margin-bottom: 10px;
+		margin-right: 10px;		
 	}
 	
 	.message .message-content .img-group {
-		width: 250px;
+		width: 330px;
+	}
+	
+	.retweet-message .message-content .img-wrap {
+		width: 80px;
+		height: 80px;
+		margin-bottom: 10px;
+		margin-right: 10px;
+	}
+	
+	.retweet-message .message-content .img-group {
+		width:270px;
 	}
 
 }

@@ -4,6 +4,25 @@
 	margin: 0px 0px;
 }
 
+body {
+	overflow-x: hidden;
+}
+
+.loading {
+	text-align: center;
+	width: 100%;
+	top: 0px;
+	position: absolute;
+	z-index: 999;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.loading img {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20%;
+}
+
 .modal {
 	z-index: 9999999;
 }
@@ -26,12 +45,16 @@
 
 }
 
-#content {
-
-
-}
 
 #footer {
+	position: relative;
+	height: 62px;
+}
+
+#footer .footer-bottom{
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
 	height: 60px;
 	line-height: 60px;
 	background: rgba(0,23,343,.073);
@@ -92,6 +115,11 @@
   .bg-col-autoresize {
     width: 75%;
   }
+  
+  .loading img {
+	width: 150px;
+	height: 150px;
+  }
 }
 
 
@@ -99,6 +127,12 @@
   .bg-col-autoresize {
     width: 100%;
 
+  }
+  
+   .loading img {
+	width: 100px;
+	height: 100px;
+	margin-top: 60%;
   }
 }
 
@@ -118,8 +152,14 @@
 	}
 
 	.nav-pills li[class^=header] a span{
-		font-size: 10px;
+		font-size: 0.7em;
 	}
+	
+	.loading img {
+		width: 70px;
+		height: 70px;
+		margin-top: 60%;
+  	}
 
 
 }

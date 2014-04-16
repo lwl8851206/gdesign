@@ -54,8 +54,18 @@ friendshipControllers.controller('FollowerListCtrl', ['$scope', '$routeParams', 
 			"page" : $scope.page,
 			"uid" : "1896325745"
 		},
+		beforeSend : function() {
+			jQuery("body").append("<div class='loading'></div>");
+			jQuery(".loading").css("height", document.body.scrollHeight + "px");
+			jQuery(".loading").append("<img src='img/loading1.gif'>");
+		},
+		
 		async : true,
 		success : function(data) {
+			jQuery(".loading").fadeOut(1000, function() {
+				$(this).remove();
+			});
+			
 			$scope.$apply(function(scope) {
 				var jsonData = eval("(" + data + ")");
 				if (jsonData != null) {
@@ -82,8 +92,19 @@ friendshipControllers.controller('FriendListCtrl', ['$scope', '$routeParams', 'p
   			"page" : $scope.page,
   			"uid" : "1896325745"
   		},
+  		
+		beforeSend : function() {
+			jQuery("body").append("<div class='loading'></div>");
+			jQuery(".loading").css("height", document.body.scrollHeight + "px");
+			jQuery(".loading").append("<img src='img/loading1.gif'>");
+		},
+		
   		async : true,
   		success : function(data) {
+			jQuery(".loading").fadeOut(1000, function() {
+				$(this).remove();
+			});
+  			
   			$scope.$apply(function(scope) {
   	  			var jsonData = eval("(" + data + ")");
   	  			if (jsonData != null) {

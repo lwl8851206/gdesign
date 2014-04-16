@@ -20,6 +20,7 @@ public class WeiboAction extends ActionSupport{
 	public WeiboAction() {
 		req = ServletActionContext.getRequest();
 		res = ServletActionContext.getResponse();
+
 	}
 	
 	public void setResult(String result) {
@@ -61,8 +62,18 @@ public class WeiboAction extends ActionSupport{
 	}
 	
 	public WeiboHelper getWeiboHelper() {
-		if (this.weiboHelper == null)
-			this.initWeiboHelper();
+		if (this.weiboHelper == null) {
+			if (this.token != null)
+				this.initWeiboHelper();
+			else {
+				HttpSession session = this.req.getSession();
+				this.setToken(session.getAttribute("token").toString());
+				this.initWeiboHelper();
+			}
+
+			
+		}
+			
 		return this.weiboHelper;
 	}
 	

@@ -1,10 +1,13 @@
-		<div class="container message-group">
+		<div class="container message-group" data-ngcomplete="{{1 + 1}}">
 			<div class="row message" ng-repeat="tweet in tweets" id="tweet{{tweet.mid}}">
 				<div class="bg-col-autoresize clearfix" >
-					<article>
+					<article class="clearfix">
 						<header class="message-owner">
 							<img  src="{{tweet.user.profile_image_url}}" width=40 height=40>
 							<a href="weibo/blogger.jsp#/userinfo/{{tweet.user.id}}"><span class="text-warn">{{tweet.screen_name}}</span></a>
+							
+								<small class="glyphicon glyphicon-time">{{tweet.created_at}}</small>
+							
 						</header>
 						<section class="message-content clearfix">
 							
@@ -17,7 +20,7 @@
 							</div>
 
 								
-							<div ng-show="checkShow(tweet.retweeted_status)" class="well">
+							<div ng-show="checkShow(tweet.retweeted_status)" class="well clearfix retweet-message">
 								<div class="message-owner">
 									<img  src="{{tweet.retweeted_status.user.profile_image_url}}" width=40 height=40>
 									<a href="weibo/blogger.jsp#/userinfo/{{tweet.retweeted_status.user.id}}"><span class="text-warn">{{tweet.retweeted_status.screen_name}}</span></a>										
@@ -38,37 +41,44 @@
 
 						</section>
 						<footer class="clearfix message-footer">
-							<div class="pull-right">
-								<blockquote>
-									<small>{{tweet.created_at}}</small>
-								</blockquote>
-							
-							</div>
+								<div class="col-xs-12 message-action text-right">
+									<div class="message-action-repost m-item" ng-click="updateMid(tweet.mid)" data-toggle="modal" data-target="#myModal">
+										<span class="glyphicon glyphicon-retweet m-item-a"> 转发</span><span class="badge">{{tweet.reposts_count}}</span>
+									</div>
+       								<div class="message-action-comment m-item" ng-click="toggleCPanel(tweet.mid, $index);">
+ 										<span class="glyphicon glyphicon-comment m-item-a"> 评论</span><span class="badge">{{tweet.comments_count}}</span>       								
+       								</div>
+       								<div class="message-action-remove m-item" ng-show="tweet.user.screen_name == userName" ng-click="destroyTweet(tweet.mid)">
+      									<span class="glyphicon glyphicon-remove m-item-a" > 删除</span>
+									</div>
+													
+								</div>
+
 						</footer>
 						
-						<div class="message-action">							
+<!-- 						<div class="message-action">							
 	
 						    <a href="javascript:void(0);" class="dropdown-toggle glyphicon glyphicon-collapse-down" data-toggle="dropdown">
 						    </a>
 						    
-						    <ul class="dropdown-menu list-group">
-							  <li class="list-group-item message-action-repost" ng-click="updateMid(tweet.mid)" data-toggle="modal" data-target="#myModal">
+						    <ul class="list-group">
+							  <li class=" message-action-repost" ng-click="updateMid(tweet.mid)" data-toggle="modal" data-target="#myModal">
 							    
 							    <span class="glyphicon glyphicon-retweet"> 转发</span><span class="badge">{{tweet.reposts_count}}</span>
 							  </li>									  
 							  
-							  <li class="list-group-item message-action-comment" ng-click="toggleCPanel(tweet.mid, $index);">
+							  <li class=" message-action-comment" ng-click="toggleCPanel(tweet.mid, $index);">
 							   
 							    <span class="glyphicon glyphicon-comment"> 评论</span><span class="badge">{{tweet.comments_count}}</span>
 							  </li>
 	
-							  <li class="list-group-item message-action-remove" ng-show="tweet.user.screen_name == 'Do_Once_伟龙'" ng-click="destroyTweet(tweet.mid)">
+							  <li class=" message-action-remove" ng-show="tweet.user.screen_name == 'Do_Once_伟龙'" ng-click="destroyTweet(tweet.mid)">
 							    <span class="glyphicon glyphicon-remove"  > 删除</span>
 							  </li>									  
 							</ul>
 							
 						  
-						</div>						
+						</div>	 -->					
 
 						
 						<div class="message-comment-panel" ng-show="cPanelShow[$index]">
@@ -98,7 +108,7 @@
 										        <li ng-class="{disabled:cPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].bPage!=cPage[$index]}" ><a ng-click="showComments(tweet.mid, cPageDirect[$index].bPage, $index)">«</a></li>
 										        <li class="disabled"><a  disabled href="javascript:void(0);" ng-bind="cPage[$index]"> <span class="sr-only">(current)</span></a></li>
 										        
-										        <li ng-class="{disabled:fPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].fPage!=cPage[$index]}"><a ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)">»</a></li>
+										        <li ng-class="{disabled:cPageDirect[$index].fPage == cPage[$index], active:cPageDirect[$index].fPage!=cPage[$index]}"><a ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)">»</a></li>
 										     </ul>
 										</div>
 					 					<div class="col-xs-4  page-action " style="margin: 20px 0;" >
@@ -113,26 +123,12 @@
 								
 								<!-- 小分辨率时显示 -->
 								<div class="row cm-pagination xs-cm-pagination " ng-show="checkShow(comments[$index])" >
-				 					<div class="col-xs-5  col-xs-offset-3 pagination-info">
-										<ul class="pagination">
-									        <li ng-class="{disabled:cPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].bPage!=cPage[$index]}" ><a ng-click="showComments(tweet.mid, cPageDirect[$index].bPage, $index)">«</a></li>
-									        <li class="disabled"><a  disabled href="javascript:void(0);" ng-bind="cPage[$index]"> <span class="sr-only">(current)</span></a></li>
-									        
-									        <li ng-class="{disabled:fPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].fPage!=cPage[$index]}"><a ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)">»</a></li>
-									     </ul>
-									</div>
-				 					<div class="col-xs-4  page-action " style="margin: 20px 0;" >
-				 						<div class="row">
-					 						<div class="col-xs-12" style="line-height: 34px;">
-								            		共<span class="text-info"><strong>{{cPageSum[$index]}}</strong></span>页
-					 						</div>
-				 						</div>
-									</div> 
 									
-									<div class="col-xs-12">
-										<button class="glyphicon glyphicon-chevron-left"></button>
-										<button class="glyphicon glyphicon-chevron-right"></button>
-										
+									<div class="col-xs-12 text-center">
+										<button ng-click="showComments(tweet.mid, cPageDirect[$index].bPage, $index)" class="glyphicon glyphicon-chevron-left" ng-class="{disabled:cPageDirect[$index].bPage == cPage[$index], active:cPageDirect[$index].bPage!=cPage[$index]}"></button>
+										<span class="text-warning" ng-bind="cPage[$index]"></span>
+										<button  ng-click="showComments(tweet.mid, cPageDirect[$index].fPage, $index)" class="glyphicon glyphicon-chevron-right" ng-class="{disabled:cPageDirect[$index].fPage == cPage[$index], active:cPageDirect[$index].fPage!=cPage[$index]}"></button>
+										&nbsp;共<span class="text-info" ng-bind="cPageSum[$index]"></span>页
 									</div>
 								</div>								
 								
@@ -144,7 +140,7 @@
 																
 								
 								<div class="row">
-									<div class="col-xs-12">
+									<div class="col-xs-12 text-center">
 										<a href="javascript:void(0);" class="text-danger glyphicon glyphicon-chevron-up pull-right slide-up-cp" ng-click="toggleCPanel(tweet.mid, $index);">收起</a>
 									</div>
 								</div>
@@ -198,9 +194,29 @@
 
 			</div>
 			
+				<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="myModalLabel">转发微博</h4>
+			      </div>
+			      <div class="modal-body">
+			        <textarea rows="4" class="col-xs-12" style="margin-bottom:20px;"  id="retweet-text" ng-model="retweetText"></textarea>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="retweet(retweetId, retweetText)">转发</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->			
+			
+			
 			<div class="row tweets-pagination" ng-show="checkShow(tweets)">
 					
- 					<div class="col-xs-2 pagination-info col-xs-offset-3">
+ 					<div class="col-md-2  col-sm-4 pagination-info col-md-offset-3 col-sm-offset-2" >
 						<ul class="pagination">
 					        <li ng-class="{disabled:pageDirect.bPage == page, active:pageDirect.bPage!=page}"><a  href="weibo/index.jsp#/tweets/page/{{pageDirect.bPage}}/uid/{{uid}}">«</a></li>
 					        <li class="disabled"><a  disabled href="javascript:void(0);">{{page}} <span class="sr-only">(current)</span></a></li>
@@ -210,9 +226,9 @@
 					</div>
 					
 					
- 					<div class="col-xs-4  page-action " style="margin: 20px 0;">
+ 					<div class="col-md-4 col-sm-6 page-action " style="margin: 20px 0;">
  						<div class="row">
- 							<div class="col-xs-6">
+ 							<div class="col-md-6 col-sm-6">
 	 	 	 					<div class=" input-group">
 		 					 	  <input type="text" class="form-control" ng-model="pageGo">
 						          <span class="input-group-btn">
@@ -221,7 +237,7 @@
 		 						</div>							
  							</div>
 
-	 						<div class="col-xs-6" style="line-height: 34px;">
+	 						<div class="col-md-6 col-sm-6" style="line-height: 34px;">
 		 						
 							
 						         
@@ -233,28 +249,9 @@
  						</div>
 
 				   
-					</div> 
-					
+					</div>  
 					
 			</div>
 
 		</div> 
 		
-	<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">转发微博</h4>
-      </div>
-      <div class="modal-body">
-        <textarea rows="4" class="col-xs-12" style="margin-bottom:20px;"  id="retweet-text" ng-model="retweetText"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="retweet(retweetId, retweetText)">转发</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
